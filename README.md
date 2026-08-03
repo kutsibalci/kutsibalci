@@ -33,6 +33,25 @@ separate instead of hiding buttons in a shared view.
 
 <br>
 
+## Also Building — File Analysis Service
+
+<div align="center">
+  <img src="./assets/analysis.svg" alt="File Analysis Service architecture" width="100%" />
+</div>
+
+A file analysis pipeline that scans uploads with **YARA** rules, parses PE structure with
+`pefile`, and submits samples to a **CAPE** sandbox for behavioural analysis. The work is
+queued through **Redis** to a **Celery** worker rather than blocking the request — analysing
+an untrusted file is slow, and it has no business happening inside an HTTP handler.
+
+What I took from it: how to keep hostile input away from the request path, why isolation
+matters when the thing you are inspecting may be actively malicious, and how to design an
+API around work that finishes long after the response does.
+
+*The source stays private while it is still being built.*
+
+<br>
+
 ## Focus
 
 | Area | What I'm actually doing about it |
