@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" width="440" height="168" role="img" aria-label="Pansuman Simulator — Unity, URP, C# (private, in progress)">
+  <defs>
+    <clipPath id="cp"><rect x="0.5" y="0.5" width="439" height="167" rx="12"/></clipPath>
+    <pattern id="gp" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#30363d" fill-opacity="0.4"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#cp)">
+    <rect width="440" height="168" fill="#0d1117"/>
+    <rect width="440" height="168" fill="url(#gp)"/>
+    <circle cx="410" cy="6" r="86" fill="#f778ba" fill-opacity="0.06"/>
+    <rect x="0" y="0" width="4" height="168" fill="#f778ba"/>
+  </g>
+  <rect x="0.5" y="0.5" width="439" height="167" rx="12" fill="none" stroke="#30363d"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
+    <circle cx="386" cy="26" r="3" fill="#8b949e"/>
+    <text x="428" y="30" font-size="9" fill="#6e7681" text-anchor="end">PRIVATE</text>
+
+    <text x="24" y="42" font-size="16" font-weight="700" fill="#e6edf3">Pansuman Simulator</text>
+    <text x="24" y="60" font-size="10" fill="#f778ba" letter-spacing="1">UNITY · IN PROGRESS</text>
+
+    <text x="24" y="88" font-size="11" fill="#8b949e">Training simulator for wound dressing procedure</text>
+    <text x="24" y="105" font-size="11" fill="#8b949e">practice — ordered steps, sterility checks and feedback</text>
+    <text x="24" y="122" font-size="11" fill="#8b949e">on what went wrong. Early scaffolding.</text>
+
+    <g font-size="9" fill="#8b949e">
+      <rect x="24"  y="136" width="46" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="47"  y="148" text-anchor="middle">Unity</text>
+      <rect x="76"  y="136" width="38" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="95"  y="148" text-anchor="middle">URP</text>
+      <rect x="120" y="136" width="34" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="137" y="148" text-anchor="middle">C#</text>
+    </g>
+  </g>
+</svg>

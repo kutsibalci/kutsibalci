@@ -71,16 +71,42 @@ API around work that finishes long after the response does.
 
 <br>
 
-## Project Register
+## Projects
 
-| Project | Stack | Notes |
-|---|---|---|
-| [Course Registration System](https://github.com/kutsibalci/Course-Registration-System) | ASP.NET Core MVC · EF Core · SQLite | Public catalogue + authenticated admin area |
-| [Business Data Panel](https://github.com/kutsibalci/ResturantData) | FastAPI · SQLAlchemy · Pydantic | Paginated REST API, cascading filters, Excel export |
-| [Coffee Shop Management](https://github.com/kutsibalci/Small-coffee-Shop-Management-App) | C# · Windows Forms · MySQL | Point-of-sale till and manager panel |
-| [Redmine Deployment](https://github.com/kutsibalci/Redmine-Upgrade) | Docker Compose · PostgreSQL · AWS EC2 | Self-hosted stack, built with [Atakan MERGEN](https://github.com/) |
-| File Analysis *(private)* | FastAPI · YARA · Celery · Docker | Static and dynamic analysis service — releasing once finished |
-| Pansuman Simulator *(private)* | Unity · URP · C# | Wound-dressing training simulator, in progress |
+<table>
+  <tr>
+    <td width="50%">
+      <a href="https://github.com/kutsibalci/Course-Registration-System">
+        <img src="./assets/card-course.svg" alt="Course Registration System — ASP.NET Core MVC, EF Core, SQLite" width="100%" />
+      </a>
+    </td>
+    <td width="50%">
+      <a href="https://github.com/kutsibalci/ResturantData">
+        <img src="./assets/card-data.svg" alt="Business Data Panel — FastAPI, SQLAlchemy, Pydantic" width="100%" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
+    </td>
+    <td width="50%">
+      <a href="https://github.com/kutsibalci/Redmine-Upgrade">
+        <img src="./assets/card-redmine.svg" alt="Redmine Deployment — Docker Compose, PostgreSQL, AWS EC2" width="100%" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <a href="https://github.com/kutsibalci/Small-coffee-Shop-Management-App">
+        <img src="./assets/card-coffee.svg" alt="Coffee Shop Management — C#, Windows Forms, MySQL" width="100%" />
+      </a>
+    </td>
+    <td width="50%">
+      <img src="./assets/card-pansuman.svg" alt="Pansuman Simulator — Unity, URP, C#" width="100%" />
+    </td>
+  </tr>
+</table>
 
 Several of these started as team projects — the Redmine deployment was built with
 **Atakan MERGEN**, and I contribute to repositories owned by
