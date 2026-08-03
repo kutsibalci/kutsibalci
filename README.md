@@ -4,8 +4,9 @@
 
 <br>
 
-Backend development student at **Anadolu University**. I build server-side systems end to
-end — schema first, then the API, then the container it ships in.
+Backend development student at **Anadolu University**, based in **İzmir, Türkiye**.
+I build server-side systems end to end — schema first, then the API, then the container
+it ships in.
 
 Most of what is here started as something I wanted to understand rather than something I
 was told to build: how an ORM actually maps a schema, what a request touches between the
@@ -78,6 +79,6 @@ separate instead of hiding buttons in a shared view.
 
 **Get in touch** — <a href="mailto:balcihkutsi@gmail.com">balcihkutsi@gmail.com</a>
 
-<sub>Eskişehir, Türkiye</sub>
+<sub>İzmir, Türkiye · open to remote and hybrid roles</sub>
 
 </div>

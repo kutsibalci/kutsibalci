@@ -35,7 +35,7 @@
     <rect x="48" y="134" width="54" height="3" rx="1.5" fill="url(#accent)"/>
 
     <text x="48" y="166" font-size="15" fill="#79c0ff">ASP.NET&#160;Core · FastAPI · PostgreSQL · Docker</text>
-    <text x="48" y="192" font-size="13" fill="#8b949e">Anadolu University — Eskişehir, Türkiye</text>
+    <text x="48" y="192" font-size="13" fill="#8b949e">Anadolu University · Based in İzmir, Türkiye</text>
   </g>
 
   <!-- request path diagram -->
