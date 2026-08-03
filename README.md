@@ -108,11 +108,8 @@ API around work that finishes long after the response does.
   </tr>
 </table>
 
-Several of these started as team projects — the Redmine deployment was built with
-**Atakan MERGEN**, and I contribute to repositories owned by
-[@hzflora](https://github.com/hzflora), including the data-collection work that became
-`ResturantData`. Reviewing someone else's schema, and having mine reviewed, taught me more
-than any tutorial did.
+Some of this is team work — the Redmine deployment was built with **Atakan MERGEN**
+([@hzflora](https://github.com/hzflora)), whose repositories I also contribute to.
 
 <br>
 
