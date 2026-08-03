@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300" role="img" aria-label="Technology stack: languages, backend frameworks, data stores, infrastructure">
+  <defs>
+    <pattern id="g2" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#30363d" fill-opacity="0.4"/>
+    </pattern>
+    <clipPath id="c2"><rect x="0.5" y="0.5" width="899" height="299" rx="14"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#c2)">
+    <rect width="900" height="300" fill="#0d1117"/>
+    <rect width="900" height="300" fill="url(#g2)"/>
+  </g>
+  <rect x="0.5" y="0.5" width="899" height="299" rx="14" fill="none" stroke="#30363d"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
+    <text x="36" y="44" font-size="12" fill="#8b949e" letter-spacing="2.5">TECHNOLOGY STACK</text>
+    <line x1="36" y1="58" x2="864" y2="58" stroke="#21262d"/>
+
+    <!-- column 1 -->
+    <g transform="translate(36, 92)">
+      <text font-size="11" fill="#79c0ff" letter-spacing="1.5">LANGUAGES</text>
+      <g font-size="13" fill="#e6edf3">
+        <text y="30">C#</text>
+        <text y="54">Python</text>
+        <text y="78">JavaScript</text>
+        <text y="102">SQL</text>
+        <text y="126">HTML · CSS</text>
+      </g>
+    </g>
+    <line x1="228" y1="80" x2="228" y2="262" stroke="#21262d"/>
+
+    <!-- column 2 -->
+    <g transform="translate(264, 92)">
+      <text font-size="11" fill="#7ee787" letter-spacing="1.5">BACKEND</text>
+      <g font-size="13" fill="#e6edf3">
+        <text y="30">ASP.NET Core MVC</text>
+        <text y="54">Entity Framework Core</text>
+        <text y="78">FastAPI</text>
+        <text y="102">SQLAlchemy · Pydantic</text>
+        <text y="126">Celery</text>
+      </g>
+    </g>
+    <line x1="500" y1="80" x2="500" y2="262" stroke="#21262d"/>
+
+    <!-- column 3 -->
+    <g transform="translate(536, 92)">
+      <text font-size="11" fill="#d2a8ff" letter-spacing="1.5">DATA</text>
+      <g font-size="13" fill="#e6edf3">
+        <text y="30">PostgreSQL</text>
+        <text y="54">MySQL</text>
+        <text y="78">SQLite</text>
+        <text y="102">Redis</text>
+      </g>
+    </g>
+    <line x1="686" y1="80" x2="686" y2="262" stroke="#21262d"/>
+
+    <!-- column 4 -->
+    <g transform="translate(722, 92)">
+      <text font-size="11" fill="#ffa657" letter-spacing="1.5">INFRA</text>
+      <g font-size="13" fill="#e6edf3">
+        <text y="30">Docker</text>
+        <text y="54">Compose</text>
+        <text y="78">AWS EC2</text>
+        <text y="102">Linux</text>
+        <text y="126">Git</text>
+      </g>
+    </g>
+
+    <line x1="36" y1="262" x2="864" y2="262" stroke="#21262d"/>
+    <text x="36" y="284" font-size="11" fill="#6e7681">Listed only where used in shipped work — see the project register below.</text>
+  </g>
+</svg>
