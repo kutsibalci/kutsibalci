@@ -63,6 +63,12 @@ separate instead of hiding buttons in a shared view.
 | File Analysis *(private)* | FastAPI · YARA · Celery · Docker | Static and dynamic analysis service — releasing once finished |
 | Pansuman Simulator *(private)* | Unity · URP · C# | Wound-dressing training simulator, in progress |
 
+Several of these started as team projects — the Redmine deployment was built with
+**Atakan MERGEN**, and I contribute to repositories owned by
+[@hzflora](https://github.com/hzflora), including the data-collection work that became
+`ResturantData`. Reviewing someone else's schema, and having mine reviewed, taught me more
+than any tutorial did.
+
 <br>
 
 ## Currently Learning
