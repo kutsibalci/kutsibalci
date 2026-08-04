@@ -40,52 +40,6 @@ left my machine.
 
 <br>
 
-## Featured — Seat Reservation API
-
-**[seat-reservation-api](https://github.com/kutsibalci/seat-reservation-api)** — a ticketing
-API built around one question: **what stops the same seat from being sold twice?**
-
-Two customers open the same event page and click seat A12 in the same millisecond. The
-obvious implementation reads the seat, sees `Available`, and writes `Held` — and so does the
-other request, because both read before either wrote. Nothing is wrong with either line; the
-bug lives in the gap between them, and it only shows up under load.
-
-The fix is to make the check and the write one statement. `Seat` maps PostgreSQL's `xmin`
-system column as an EF Core concurrency token, so the write carries the version the read saw:
-
-```sql
-UPDATE seats SET status = 1 WHERE id = @id AND xmin = @version;
-```
-
-The first transaction to commit changes `xmin`. The second matches zero rows and gets a 409
-instead of overwriting a sale. No table locks, no `SELECT FOR UPDATE`, and two customers
-buying *different* seats never contend.
-
-Measured rather than asserted — twenty concurrent requests, one seat, real PostgreSQL in a
-container:
-
-```
-20 concurrent requests → 1 × 201 Created, 19 × 409 Conflict
-database: 1 held seat, 1 reservation
-```
-
-The second race is telling anyone about it. Confirming a reservation writes to PostgreSQL
-and publishes to RabbitMQ, and no transaction spans both — publish first and the broker
-may hold an event for a commit that fails; publish after and the process can die in
-between. So the event is written as a row in the **same transaction** as the reservation,
-and a dispatcher moves it to the broker afterwards. That is at-least-once rather than
-exactly-once, and the consumer absorbs the difference: a receipt row keyed on the message
-id, inserted alongside the work, so a duplicate delivery hits the primary key instead of
-sending a second e-mail.
-
-`FOR UPDATE SKIP LOCKED` is what lets a second dispatcher be started at all — `FOR UPDATE`
-alone would make it queue behind the first.
-
-`.NET 10` · `PostgreSQL` · `RabbitMQ` · `Redis` · `JWT with refresh rotation` ·
-`Clean Architecture` · `Testcontainers` · **84 tests** · `Docker Compose` · CI
-
-<br>
-
 ## What testing an old project taught me
 
 <div align="center">
@@ -140,8 +94,7 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 
 | Area | What I'm actually doing about it |
 |---|---|
-| **Concurrency** | Optimistic concurrency against a real database, and tests that genuinely race rather than asserting they would |
-| **Messaging** | Transactional outbox, at-least-once delivery, idempotent consumers, dead-letter queues — RabbitMQ driven directly rather than through a framework, because the mechanics are the point |
+| **Concurrency** | Making the check and the write one statement, and tests that genuinely race rather than asserting they would |
 | **API design** | Paginated, validated REST endpoints — with ordering that makes pagination stable and ceilings on anything read into memory |
 | **Data modelling** | Normalised schemas, code-first migrations, and constraints in the database rather than only in application code |
 | **Deployment** | Docker Compose and AWS EC2, with credentials from the environment and nothing sensitive published on a port |
@@ -174,9 +127,8 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
   </tr>
   <tr>
     <td width="50%">
-      <a href="https://github.com/kutsibalci/File-Analysis">
-        <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
-      </a>
+      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
+      <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
     </td>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Redmine-Upgrade">
@@ -203,9 +155,8 @@ Some of this is team work — the Redmine deployment was built with **Atakan MER
 
 ## Currently Learning
 
-1. SQL query planning — reading execution plans instead of guessing at indexes
-2. What breaks when one service becomes several: distributed tracing, and knowing which
-   failures a retry actually fixes
+1. Concurrency beyond a single row — the outbox pattern, message queues, idempotent consumers
+2. SQL query planning — reading execution plans instead of guessing at indexes
 3. Data structures and algorithms, properly rather than for exams
 
 <br>
