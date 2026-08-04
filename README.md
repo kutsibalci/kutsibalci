@@ -69,8 +69,20 @@ container:
 database: 1 held seat, 1 reservation
 ```
 
-`.NET 10` · `PostgreSQL` · `Redis` · `JWT with refresh rotation` · `Clean Architecture` ·
-`Testcontainers` · **65 tests** · `Docker Compose` · CI
+The second race is telling anyone about it. Confirming a reservation writes to PostgreSQL
+and publishes to RabbitMQ, and no transaction spans both — publish first and the broker
+may hold an event for a commit that fails; publish after and the process can die in
+between. So the event is written as a row in the **same transaction** as the reservation,
+and a dispatcher moves it to the broker afterwards. That is at-least-once rather than
+exactly-once, and the consumer absorbs the difference: a receipt row keyed on the message
+id, inserted alongside the work, so a duplicate delivery hits the primary key instead of
+sending a second e-mail.
+
+`FOR UPDATE SKIP LOCKED` is what lets a second dispatcher be started at all — `FOR UPDATE`
+alone would make it queue behind the first.
+
+`.NET 10` · `PostgreSQL` · `RabbitMQ` · `Redis` · `JWT with refresh rotation` ·
+`Clean Architecture` · `Testcontainers` · **84 tests** · `Docker Compose` · CI
 
 <br>
 
@@ -129,6 +141,7 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 | Area | What I'm actually doing about it |
 |---|---|
 | **Concurrency** | Optimistic concurrency against a real database, and tests that genuinely race rather than asserting they would |
+| **Messaging** | Transactional outbox, at-least-once delivery, idempotent consumers, dead-letter queues — RabbitMQ driven directly rather than through a framework, because the mechanics are the point |
 | **API design** | Paginated, validated REST endpoints — with ordering that makes pagination stable and ceilings on anything read into memory |
 | **Data modelling** | Normalised schemas, code-first migrations, and constraints in the database rather than only in application code |
 | **Deployment** | Docker Compose and AWS EC2, with credentials from the environment and nothing sensitive published on a port |
@@ -190,8 +203,9 @@ Some of this is team work — the Redmine deployment was built with **Atakan MER
 
 ## Currently Learning
 
-1. Concurrency beyond a single row — the outbox pattern, message queues, idempotent consumers
-2. SQL query planning — reading execution plans instead of guessing at indexes
+1. SQL query planning — reading execution plans instead of guessing at indexes
+2. What breaks when one service becomes several: distributed tracing, and knowing which
+   failures a retry actually fixes
 3. Data structures and algorithms, properly rather than for exams
 
 <br>
