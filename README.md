@@ -16,6 +16,29 @@ route and the database, what it takes to run a service on a server instead of a 
 
 <br>
 
+## Open Source
+
+**[root-project/root#23002](https://github.com/root-project/root/pull/23002) — merged into [ROOT](https://root.cern), CERN's data analysis framework for particle physics.**
+
+`tmva/tmva/inc/LinkDef5.h` had been unreachable since 2015. The commit that split TMVA into
+`libTMVA` and `libTMVAGui` dropped that file's `#include` from the master LinkDef but left the
+file itself in the tree, and two later maintenance sweeps edited it without noticing it was
+already dead. I traced the commit that orphaned it, checked that every symbol it declared was
+already covered by the module that actually owns those classes, and confirmed against the
+generated build graph that nothing referenced it — then proposed the removal.
+
+Still open: [ROOT #23004](https://github.com/root-project/root/pull/23004), the same class of
+leftover in `smatrix` and `genvector`; a latent
+[undefined-behaviour fix](https://github.com/eclipse-score/baselibs/pull/444) in
+[Eclipse S-CORE](https://github.com/eclipse-score), the BMW/Bosch/Mercedes automotive platform;
+and two issues in [NASA's F´](https://github.com/nasa/fprime) flight software framework.
+
+What I keep relearning here: the patch is the easy part. Proving the claim before making it is
+the actual work — several findings I was sure about turned out to be false positives, and never
+left my machine.
+
+<br>
+
 ## Featured
 
 <div align="center">
