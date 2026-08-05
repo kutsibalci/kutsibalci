@@ -40,6 +40,58 @@ left my machine.
 
 <br>
 
+## Featured — Concurrent Ticketing
+
+**[concurrent-ticketing](https://github.com/kutsibalci/concurrent-ticketing)** — a ticketing
+API built around one question: **what stops the same seat from being sold twice?**
+
+Two customers open the same event page and click seat A12 in the same millisecond. The
+obvious implementation reads the seat, sees `Available`, and writes `Held` — and so does the
+other request, because both read before either wrote. Nothing is wrong with either line; the
+bug lives in the gap between them, and it only shows up under load.
+
+The fix is to make the check and the write one statement. `Seat` maps PostgreSQL's `xmin`
+system column as an EF Core concurrency token, so the write carries the version the read saw:
+
+```sql
+UPDATE seats SET status = 1 WHERE id = @id AND xmin = @version;
+```
+
+The first transaction to commit changes `xmin`. The second matches zero rows and gets a 409
+instead of overwriting a sale. No table locks, no `SELECT FOR UPDATE`, and two customers
+buying *different* seats never contend.
+
+Measured rather than asserted — twenty concurrent requests, one seat, real PostgreSQL in a
+container:
+
+```
+20 concurrent requests → 1 × 201 Created, 19 × 409 Conflict
+database: 1 held seat, 1 reservation
+```
+
+The second race is telling anyone about it. Confirming a reservation writes to PostgreSQL
+and publishes to RabbitMQ, and no transaction spans both — publish first and the broker
+may hold an event for a commit that fails; publish after and the process can die in
+between. So the event is written as a row in the **same transaction** as the reservation,
+and a dispatcher moves it to the broker afterwards. That is at-least-once rather than
+exactly-once, and the consumer absorbs the difference: a receipt row keyed on the message
+id, inserted alongside the work, so a duplicate delivery hits the primary key instead of
+sending a second e-mail.
+
+`FOR UPDATE SKIP LOCKED` is what lets a second dispatcher be started at all — `FOR UPDATE`
+alone would make it queue behind the first.
+
+The tests I value most here are the ones added last. With 84 passing, running the stack by
+hand showed `POST /api/auth/register` accepting a three-character password and the literal
+string `bu-bir-email-degil` as an e-mail address: the contracts carried `[Required]` and
+`[MinLength]`, but nothing evaluated them, and no test crossed the HTTP boundary where they
+live. A green suite says the tested thing works. It says nothing about the untested one.
+
+`.NET 10` · `PostgreSQL` · `RabbitMQ` · `Redis` · `JWT with refresh rotation` ·
+`Clean Architecture` · `Testcontainers` · **102 tests** · `Docker Compose` · CI
+
+<br>
+
 ## What testing an old project taught me
 
 <div align="center">
@@ -94,7 +146,8 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 
 | Area | What I'm actually doing about it |
 |---|---|
-| **Concurrency** | Making the check and the write one statement, and tests that genuinely race rather than asserting they would |
+| **Concurrency** | Optimistic concurrency against a real database, and tests that genuinely race rather than asserting they would |
+| **Messaging** | Transactional outbox, at-least-once delivery, idempotent consumers, dead-letter queues — RabbitMQ driven directly rather than through a framework, because the mechanics are the point |
 | **API design** | Paginated, validated REST endpoints — with ordering that makes pagination stable and ceilings on anything read into memory |
 | **Data modelling** | Normalised schemas, code-first migrations, and constraints in the database rather than only in application code |
 | **Deployment** | Docker Compose and AWS EC2, with credentials from the environment and nothing sensitive published on a port |
@@ -115,36 +168,44 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 <table>
   <tr>
     <td width="50%">
+      <a href="https://github.com/kutsibalci/concurrent-ticketing">
+        <img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing — .NET 10, PostgreSQL, RabbitMQ, Redis" width="100%" />
+      </a>
+    </td>
+    <td width="50%">
       <a href="https://github.com/kutsibalci/Course-Registration-System">
         <img src="./assets/card-course.svg" alt="Course Registration System — ASP.NET Core MVC, EF Core, SQLite" width="100%" />
       </a>
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <a href="https://github.com/kutsibalci/business-directory-api">
         <img src="./assets/card-data.svg" alt="Business Directory API — FastAPI, SQLAlchemy, Alembic" width="100%" />
       </a>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
       <!-- Not linked: the repository is private. Restore the link when it goes public. -->
       <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Redmine-Upgrade">
         <img src="./assets/card-redmine.svg" alt="Redmine Deployment — Docker Compose, PostgreSQL, AWS EC2" width="100%" />
       </a>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Small-coffee-Shop-Management-App">
         <img src="./assets/card-coffee.svg" alt="Coffee Shop Management — C#, Windows Forms, MySQL" width="100%" />
       </a>
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <img src="./assets/card-pansuman.svg" alt="Pansuman Simulator — Unity, URP, C#" width="100%" />
     </td>
+    <td width="50%"></td>
   </tr>
 </table>
 
@@ -155,8 +216,9 @@ Some of this is team work — the Redmine deployment was built with **Atakan MER
 
 ## Currently Learning
 
-1. Concurrency beyond a single row — the outbox pattern, message queues, idempotent consumers
-2. SQL query planning — reading execution plans instead of guessing at indexes
+1. SQL query planning — reading execution plans instead of guessing at indexes
+2. What breaks when one service becomes several: distributed tracing, and knowing which
+   failures a retry actually fixes
 3. Data structures and algorithms, properly rather than for exams
 
 <br>
