@@ -188,9 +188,8 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
   </tr>
   <tr>
     <td width="50%">
-      <a href="https://github.com/kutsibalci/business-directory-api">
-        <img src="./assets/card-data.svg" alt="Business Directory API — FastAPI, SQLAlchemy, Alembic" width="100%" />
-      </a>
+      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
+      <img src="./assets/card-data.svg" alt="Business Directory API — FastAPI, SQLAlchemy, Alembic" width="100%" />
     </td>
     <td width="50%">
       <!-- Not linked: the repository is private. Restore the link when it goes public. -->
