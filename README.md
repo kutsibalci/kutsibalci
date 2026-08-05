@@ -199,9 +199,8 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
   </tr>
   <tr>
     <td width="50%">
-      <a href="https://github.com/kutsibalci/Redmine-Upgrade">
-        <img src="./assets/card-redmine.svg" alt="Redmine Deployment — Docker Compose, PostgreSQL, AWS EC2" width="100%" />
-      </a>
+      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
+      <img src="./assets/card-redmine.svg" alt="Redmine Deployment — Docker Compose, PostgreSQL, AWS EC2" width="100%" />
     </td>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Small-coffee-Shop-Management-App">
