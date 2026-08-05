@@ -88,7 +88,7 @@ string `bu-bir-email-degil` as an e-mail address: the contracts carried `[Requir
 live. A green suite says the tested thing works. It says nothing about the untested one.
 
 `.NET 10` · `PostgreSQL` · `RabbitMQ` · `Redis` · `JWT with refresh rotation` ·
-`Clean Architecture` · `Testcontainers` · **102 tests** · `Docker Compose` · CI
+`Clean Architecture` · `Testcontainers` · **119 tests** · `Docker Compose` · CI
 
 <br>
 
@@ -121,6 +121,14 @@ current logic (conditional UPDATE):       5 enrolled
 ```
 
 62 tests now, and CI that fails the build on any dependency with a known advisory.
+
+The same read-then-write shape turned up in the coffee shop till, and I only found it
+because I was trying to make the ordering logic testable. Adding the first item to a table
+read the table's state, saw it free, then opened a tab — so two waiters on two terminals
+both read *free* and both opened one. The order screen only ever shows the newest tab, so
+everything written to the other was never billed. One conditional `UPDATE` closes it, the
+same way the course capacity was closed. Third time I have written that fix now; I have
+stopped thinking of it as a trick and started looking for the shape.
 
 <br>
 
