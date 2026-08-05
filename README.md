@@ -18,25 +18,47 @@ route and the database, what it takes to run a service on a server instead of a 
 
 ## Open Source
 
-**[root-project/root#23002](https://github.com/root-project/root/pull/23002) — merged into [ROOT](https://root.cern), CERN's data analysis framework for particle physics.**
+Three contributions merged into projects I had no prior connection to — **[CERN's ROOT](https://root.cern)**,
+**[.NET runtime](https://github.com/dotnet/runtime)**, and the Rust project's
+**[GCC codegen backend](https://github.com/rust-lang/rustc_codegen_gcc)**.
 
-`tmva/tmva/inc/LinkDef5.h` had been unreachable since 2015. The commit that split TMVA into
-`libTMVA` and `libTMVAGui` dropped that file's `#include` from the master LinkDef but left the
-file itself in the tree, and two later maintenance sweeps edited it without noticing it was
-already dead. I traced the commit that orphaned it, checked that every symbol it declared was
-already covered by the module that actually owns those classes, and confirmed against the
-generated build graph that nothing referenced it — then proposed the removal.
+**[root-project/root#23002](https://github.com/root-project/root/pull/23002)** — `tmva/tmva/inc/LinkDef5.h`
+had been unreachable since 2015. The commit that split TMVA into `libTMVA` and `libTMVAGui` dropped that
+file's `#include` from the master LinkDef but left the file itself in the tree, and two later maintenance
+sweeps edited it without noticing it was already dead. I traced the commit that orphaned it, checked that
+every symbol it declared was already covered by the module that actually owns those classes, and confirmed
+against the generated build graph that nothing referenced it — then proposed the removal.
 
-Still open: [ROOT #23004](https://github.com/root-project/root/pull/23004), the same class of
-leftover in `smatrix` and `genvector`; a latent
+**[dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865)** — eight documentation links whose
+targets exist but whose relative paths resolve nowhere. The one I liked was in the datacontracts design docs:
+they link to `contract_descriptor.md` while the file is `contract-descriptor.md`, and the same document links
+to it *correctly* twice elsewhere. So it was an inconsistency inside one file rather than a rename nobody
+finished. Another was written with Windows backslashes. The repository has no markdown link checker in CI,
+which is why they rotted quietly.
+
+**[rust-lang/rustc_codegen_gcc#945](https://github.com/rust-lang/rustc_codegen_gcc/pull/945)** — I found these
+while sweeping `rust-lang/rust`, and the useful part was working out that I was in the wrong repository.
+`compiler/rustc_codegen_gcc` is a subtree synced *from* its own project, so a fix landed upstream would have
+been overwritten on the next sync. One link pointed at `./doc/gimple.md` from a file already inside `doc/`.
+The other pointed at a file deleted a year earlier; I traced the commit that removed it and found the content
+had survived inside a broader `debugging.md`, so the entry could be repointed instead of dropped.
+
+Still open: [ROOT #23004](https://github.com/root-project/root/pull/23004) and
+[#23019](https://github.com/root-project/root/pull/23019), more leftovers in `smatrix`/`genvector` and CMake
+test dependencies that are never read; a latent
 [undefined-behaviour fix](https://github.com/eclipse-score/baselibs/pull/444) in
-[Eclipse S-CORE](https://github.com/eclipse-score), the BMW/Bosch/Mercedes automotive platform;
-and [an issue](https://github.com/nasa/fprime/issues/5570) in
-[NASA's F´](https://github.com/nasa/fprime) flight software framework.
+[Eclipse S-CORE](https://github.com/eclipse-score), the BMW/Bosch/Mercedes automotive platform, currently with
+a BMW reviewer; [twenty links in Apache Airflow](https://github.com/apache/airflow/pull/71179) that 404 because
+they cross a symlink — the files open fine locally, but Git stores the directory as a symlink blob and GitHub
+will not traverse it; a [bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
+[an issue](https://github.com/nasa/fprime/issues/5570) in [NASA's F´](https://github.com/nasa/fprime) flight
+software; and [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs.
 
-What I keep relearning here: the patch is the easy part. Proving the claim before making it is
-the actual work — several findings I was sure about turned out to be false positives, and never
-left my machine.
+What I keep relearning here: the patch is the easy part. Proving the claim before making it is the actual
+work. Those eight .NET links came out of thirty-nine candidates, and the twenty in Airflow out of three
+hundred and seventy-two — the rest were correct in a context I had not accounted for, and understanding why
+took longer than any of the fixes. Several findings I was sure about turned out to be false positives, and
+never left my machine.
 
 <br>
 
