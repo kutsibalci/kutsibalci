@@ -18,9 +18,11 @@ route and the database, what it takes to run a service on a server instead of a 
 
 ## Open Source
 
-Three contributions merged into projects I had no prior connection to — **[CERN's ROOT](https://root.cern)**,
-**[.NET runtime](https://github.com/dotnet/runtime)**, and the Rust project's
-**[GCC codegen backend](https://github.com/rust-lang/rustc_codegen_gcc)**.
+Five contributions merged into projects I had no prior connection to — **[CERN's ROOT](https://root.cern)**,
+**[.NET runtime](https://github.com/dotnet/runtime)**, the Rust project's
+**[GCC codegen backend](https://github.com/rust-lang/rustc_codegen_gcc)**,
+**[systemd](https://github.com/systemd/systemd)**, and
+**[Eclipse S-CORE](https://github.com/eclipse-score)**.
 
 **[root-project/root#23002](https://github.com/root-project/root/pull/23002)** — `tmva/tmva/inc/LinkDef5.h`
 had been unreachable since 2015. The commit that split TMVA into `libTMVA` and `libTMVAGui` dropped that
@@ -43,22 +45,61 @@ been overwritten on the next sync. One link pointed at `./doc/gimple.md` from a 
 The other pointed at a file deleted a year earlier; I traced the commit that removed it and found the content
 had survived inside a broader `debugging.md`, so the entry could be repointed instead of dropped.
 
-Still open: [ROOT #23004](https://github.com/root-project/root/pull/23004) and
-[#23019](https://github.com/root-project/root/pull/23019), more leftovers in `smatrix`/`genvector` and CMake
-test dependencies that are never read; a latent
-[undefined-behaviour fix](https://github.com/eclipse-score/baselibs/pull/444) in
-[Eclipse S-CORE](https://github.com/eclipse-score), the BMW/Bosch/Mercedes automotive platform, currently with
-a BMW reviewer; [twenty links in Apache Airflow](https://github.com/apache/airflow/pull/71179) that 404 because
+**[systemd/systemd#43300](https://github.com/systemd/systemd/pull/43300)** — seven cross-references naming a
+man page that exists but giving a section it is not installed in, so `man` sends the reader to the wrong
+place. I resolved every `<citerefentry>` in `man/` against `man/rules/meson.build`, which is generated and is
+therefore the authoritative list of what ships, and reported only references whose target *is* shipped under a
+different section — the section is a fact, not a judgement. The part I would defend in review is what happened
+next: CI went red. Rather than call it flaky, I pulled the 5.4 MB job log and found `test-fiber` timing out on
+ppc64le with `Ok: 1779, Fail: 0` — nothing failed, one thing did not finish, and a change to six XML files
+cannot reach it. I said so, and said plainly that I could find no prior report of that timeout. Two core
+maintainers merged it hours later, with the job still red.
+
+**[eclipse-score/communication#853](https://github.com/eclipse-score/communication/pull/853)** — four links in
+the design docs of the BMW/Bosch/Mercedes automotive platform. Three used one `../` too many; one image URL
+was written `hhttp://`, so a PlantUML diagram had never rendered. The sibling diagram in the same file already
+used the correct form, which is what turned a guess into a check.
+
+The two I am most interested in are not documentation.
+
+**[apache/kafka#23098](https://github.com/apache/kafka/pull/23098)** — `TokenInformation`, the delegation-token
+class, compares six fields in `equals()` and hashes seven in `hashCode()`. The extra one is `expiryTimestamp`,
+which `equals()` leaves out on purpose: renewing a token does not make it a different token. So two instances
+can be equal and hash differently, which is the one thing `Object.hashCode` forbids — `HashSet` keeps both,
+`HashMap.get` returns null. It is also the class's only non-final field and has a public setter, so an
+instance's hash changes while it sits in a collection. I walked all 500 classes in Kafka's main source that
+declare both methods; this is the only one where `hashCode` reads a field `equals` ignores. The test I added
+fails three of its four cases on trunk and passes with the fix.
+
+**[eclipse-score/baselibs#444](https://github.com/eclipse-score/baselibs/pull/444)** — placement `new` over a
+live member without ending its lifetime, in ISO 26262 ASIL-B code. The issue listed three sites; a sweep found
+six. I did *not* apply the fix the reporter proposed — `static_assert`s showed `score::Result<Value>` is
+move-constructible but not move-assignable for the non-assignable types the code exists to support, so their
+suggestion would not compile. The placement `new` is a deliberate workaround; only the lifetime was wrong.
+Assigned to me by an ETAS
+(Bosch) engineer and queued for review by a five-person panel that includes two from BMW.
+
+Also open: [twenty links in Apache Airflow](https://github.com/apache/airflow/pull/71179) that 404 because
 they cross a symlink — the files open fine locally, but Git stores the directory as a symlink blob and GitHub
-will not traverse it; a [bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
+will not traverse it (approved, awaiting merge); [sixteen in
+NVIDIA/CUTLASS](https://github.com/NVIDIA/cutlass/pull/3436) left behind by a docs reorganisation;
+[ROOT #23004](https://github.com/root-project/root/pull/23004) and
+[#23019](https://github.com/root-project/root/pull/23019); a
+[bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
 [an issue](https://github.com/nasa/fprime/issues/5570) in [NASA's F´](https://github.com/nasa/fprime) flight
-software; and [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs.
+software; [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs; and
+[ROOT #23036](https://github.com/root-project/root/issues/23036), three settings shipped in `system.rootrc`
+that nothing reads — one of them documented in two places while loopback binding is actually controlled by a
+file-static variable.
 
 What I keep relearning here: the patch is the easy part. Proving the claim before making it is the actual
-work. Those eight .NET links came out of thirty-nine candidates, and the twenty in Airflow out of three
-hundred and seventy-two — the rest were correct in a context I had not accounted for, and understanding why
-took longer than any of the fixes. Several findings I was sure about turned out to be false positives, and
-never left my machine.
+work. Those eight .NET links came out of thirty-nine candidates and the twenty in Airflow out of three hundred
+and seventy-two; in CUTLASS, ten "broken" links turned out to work because GitHub rewrites a leading slash to
+the repository root — I only learned that by fetching the rendered page instead of trusting my reading, and
+fourteen more were pointer values in sample output that happen to match the markdown link grammar exactly. At
+systemd I compared thirteen config parser tables against their man pages and found nothing: every mismatch was
+a deliberate compatibility alias or a page shared by `xi:include`. A sweep that finds nothing is a result too,
+and one that finds plenty is usually wrong. Several findings I was sure about never left my machine.
 
 <br>
 
@@ -260,3 +301,4 @@ Some of this is team work — the Redmine deployment was built with **Atakan MER
 <sub>İzmir, Türkiye · open to remote and hybrid roles</sub>
 
 </div>
+
