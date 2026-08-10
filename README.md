@@ -18,11 +18,13 @@ route and the database, what it takes to run a service on a server instead of a 
 
 ## Open Source
 
-Five contributions merged into projects I had no prior connection to — **[CERN's ROOT](https://root.cern)**,
+Seven contributions merged into projects I had no prior connection to — two into
+**[CERN's ROOT](https://root.cern)**, and one each into
 **[.NET runtime](https://github.com/dotnet/runtime)**, the Rust project's
 **[GCC codegen backend](https://github.com/rust-lang/rustc_codegen_gcc)**,
-**[systemd](https://github.com/systemd/systemd)**, and
-**[Eclipse S-CORE](https://github.com/eclipse-score)**.
+**[systemd](https://github.com/systemd/systemd)**,
+**[Eclipse S-CORE](https://github.com/eclipse-score)** and
+**[Apache Airflow](https://github.com/apache/airflow)**.
 
 **[root-project/root#23002](https://github.com/root-project/root/pull/23002)** — `tmva/tmva/inc/LinkDef5.h`
 had been unreachable since 2015. The commit that split TMVA into `libTMVA` and `libTMVAGui` dropped that
@@ -30,6 +32,15 @@ file's `#include` from the master LinkDef but left the file itself in the tree, 
 sweeps edited it without noticing it was already dead. I traced the commit that orphaned it, checked that
 every symbol it declared was already covered by the module that actually owns those classes, and confirmed
 against the generated build graph that nothing referenced it — then proposed the removal.
+
+**[root-project/root#23004](https://github.com/root-project/root/pull/23004)** — the same shape once I knew
+to look for it. `math/smatrix/inc/LinkDefAll.h` and `math/genvector/inc/Math/LinkDef_GenVectorAll.h` exist
+only to `#include` the two real LinkDefs of their package, from a time when each package built one combined
+dictionary. The build has since gone back to two dictionaries per package, each naming its own LinkDef
+directly, so the aggregates lost their only caller. Neither name appears in any `CMakeLists.txt` or `.cmake`
+file, no other LinkDef includes them, and `ROOT_INSTALL_HEADERS` excludes LinkDef headers from the install,
+so they are not reachable from outside the repository either. One commit per module, because the two are
+independently revertable.
 
 **[dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865)** — eight documentation links whose
 targets exist but whose relative paths resolve nowhere. The one I liked was in the datacontracts design docs:
@@ -60,6 +71,22 @@ the design docs of the BMW/Bosch/Mercedes automotive platform. Three used one `.
 was written `hhttp://`, so a PlantUML diagram had never rendered. The sibling diagram in the same file already
 used the correct form, which is what turned a guess into a check.
 
+**[apache/airflow#71179](https://github.com/apache/airflow/pull/71179)** — twenty links in the translation
+guide that 404 for every reader while opening fine for every author. The `i18n` README lives under a
+directory that Git stores as a **symlink blob**, and GitHub will not traverse one: clone the repository and
+the paths resolve, browse it on the web and they do not. That is why nobody had noticed. Three hundred and
+seventy-two candidates went in; twenty came out.
+
+Not every finding should be a pull request.
+**[root-project/root#23036](https://github.com/root-project/root/issues/23036)** — `system.rootrc` ships
+three settings that nothing in ROOT reads. `WebGui.HttpLoopback` is documented in *two* places while
+loopback binding is actually controlled by a file-static variable reachable only from C++; the corroboration
+was that in the block where it should have been read, it is the only value not taken from `gEnv` — the six
+around it are. Whether each should be deleted or wired up is a maintainer's call, so I filed both directions
+rather than picking one. Sergey Linev, who wrote the web GUI, replied *"Yes, some parameters were not cleaned
+up"*, opened the fix half an hour later, and it merged with two core approvals. No commit under my name — a
+confirmed report instead, which for that class of finding is the honest outcome.
+
 The two I am most interested in are not documentation.
 
 **[apache/kafka#23098](https://github.com/apache/kafka/pull/23098)** — `TokenInformation`, the delegation-token
@@ -79,27 +106,29 @@ suggestion would not compile. The placement `new` is a deliberate workaround; on
 Assigned to me by an ETAS
 (Bosch) engineer and queued for review by a five-person panel that includes two from BMW.
 
-Also open: [twenty links in Apache Airflow](https://github.com/apache/airflow/pull/71179) that 404 because
-they cross a symlink — the files open fine locally, but Git stores the directory as a symlink blob and GitHub
-will not traverse it (approved, awaiting merge); [sixteen in
-NVIDIA/CUTLASS](https://github.com/NVIDIA/cutlass/pull/3436) left behind by a docs reorganisation;
-[ROOT #23004](https://github.com/root-project/root/pull/23004) and
-[#23019](https://github.com/root-project/root/pull/23019); a
-[bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
+Also open: [sixteen links in NVIDIA/CUTLASS](https://github.com/NVIDIA/cutlass/pull/3436) left behind by a
+docs reorganisation; [a trace record in Eclipse S-CORE's
+logger](https://github.com/eclipse-score/logging/pull/253) whose ISO 26262 `Verifies` property names a symbol
+that does not exist — two of its components are a directory and the test file's own basename, so the
+traceability evidence points at nothing while the test still builds and passes;
+[ROOT #23019](https://github.com/root-project/root/pull/23019), four CMake `-depends` variables the build
+never reads; a [bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
 [an issue](https://github.com/nasa/fprime/issues/5570) in [NASA's F´](https://github.com/nasa/fprime) flight
 software; [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs; and
-[ROOT #23036](https://github.com/root-project/root/issues/23036), three settings shipped in `system.rootrc`
-that nothing reads — one of them documented in two places while loopback binding is actually controlled by a
-file-static variable.
+[three Airflow settings](https://github.com/apache/airflow/issues/71259) listed in the public configuration
+reference that no code reads.
 
 What I keep relearning here: the patch is the easy part. Proving the claim before making it is the actual
-work. Those eight .NET links came out of thirty-nine candidates and the twenty in Airflow out of three hundred
-and seventy-two; in CUTLASS, ten "broken" links turned out to work because GitHub rewrites a leading slash to
-the repository root — I only learned that by fetching the rendered page instead of trusting my reading, and
-fourteen more were pointer values in sample output that happen to match the markdown link grammar exactly. At
-systemd I compared thirteen config parser tables against their man pages and found nothing: every mismatch was
-a deliberate compatibility alias or a page shared by `xi:include`. A sweep that finds nothing is a result too,
-and one that finds plenty is usually wrong. Several findings I was sure about never left my machine.
+work. Those eight .NET links came out of thirty-nine candidates; in CUTLASS, ten "broken" links turned out to
+work because GitHub rewrites a leading slash to the repository root — I only learned that by fetching the
+rendered page instead of trusting my reading, and fourteen more were pointer values in sample output that
+happen to match the markdown link grammar exactly. The sweep behind the ROOT and Airflow settings ran against
+systemd first and found nothing at all: all thirteen config parser tables agreed with their man pages, and
+every apparent mismatch was a deliberate compatibility alias or a page shared by `xi:include`. In Eclipse
+S-CORE I validated each claimed symbol against every identifier in the repository — a corpus that contained
+the claim itself, so the check passed and reported zero findings, one of which was real. A sweep that finds
+nothing is a result too, and one that finds plenty is usually wrong. Several findings I was sure about never
+left my machine.
 
 <br>
 
@@ -152,6 +181,46 @@ live. A green suite says the tested thing works. It says nothing about the untes
 
 `.NET 10` · `PostgreSQL` · `RabbitMQ` · `Redis` · `JWT with refresh rotation` ·
 `Clean Architecture` · `Testcontainers` · **119 tests** · `Docker Compose` · CI
+
+<br>
+
+## Watch Party Sync Engine — where one instance stops being enough
+
+**[watch-party-sync-engine](https://github.com/kutsibalci/watch-party-sync-engine)** — watching video
+together in sync: YouTube, your own uploads or a shared screen, with voice and video chat on top. It
+deliberately does not touch DRM-protected content; the interesting problem is not the video, it is holding
+thousands of sockets in agreement about a single room's state.
+
+Room state changes go through a **Redis Lua** script, so the check and the write are one atomic step rather
+than a read-then-write across the network — the same shape as the ticketing seat lock, one layer down. The
+transcoding pipeline is ffmpeg producing HLS renditions, driven by a job queue I wrote rather than pulled in,
+because the retry and visibility-timeout semantics were the part I wanted to understand.
+
+The claim I care about is horizontal scaling, so it is measured rather than asserted. Latency here is the
+round trip from a command to the broadcast arriving back at the *same* client — socket → Redis Lua →
+`PUBLISH` → subscribing instance → socket:
+
+| Setup | Connections | p95 | p99 | |
+|---|---|---|---|---|
+| 1 instance | 800 | 5 ms | 30 ms | healthy |
+| 1 instance | 2,500 | **258 ms** | **1,609 ms** | saturated |
+| 2 instances | 2,500 | **14 ms** | 47 ms | healthy |
+| 2 instances | 5,000 | 27 ms | 74 ms | healthy |
+
+Doubling the instances did not halve the latency: p95 fell by a factor of eighteen and p99 by thirty-four.
+That is what queueing looks like once a system is past saturation — not a linear resource you can buy back.
+
+The part worth keeping is the measurement that was wrong. At 5,000 connections the join handshake showed a
+p95 of **9,400 ms**, and I spent two rounds fixing the wrong thing: the Postgres pool, then the TCP accept
+backlog. Neither moved the number. Three pieces of evidence then pointed the other way — HTTP on the same
+host stayed at 3 ms p50 while the handshake was at nine seconds, and server-side instrumentation put 99.2% of
+joins under 250 ms. The decisive test changed nothing on the server and split the same 5,000 virtual users
+across two k6 containers: **9,400 ms → 97 ms**. The bottleneck was the load generator scheduling five
+thousand socket event loops in one process. Without server-side numbers I would have optimised a problem that
+did not exist.
+
+`TypeScript (strict)` · `Node 24` · `Redis Lua` · `PostgreSQL` · `ffmpeg / HLS` · `k6` ·
+`Prometheus + Grafana` · **77 tests**, including a real Chrome run
 
 <br>
 
@@ -239,42 +308,47 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 <table>
   <tr>
     <td width="50%">
+      <a href="https://github.com/kutsibalci/watch-party-sync-engine">
+        <img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine — TypeScript, Redis Lua, ffmpeg, WebSocket" width="100%" />
+      </a>
+    </td>
+    <td width="50%">
       <a href="https://github.com/kutsibalci/concurrent-ticketing">
         <img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing — .NET 10, PostgreSQL, RabbitMQ, Redis" width="100%" />
       </a>
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Course-Registration-System">
         <img src="./assets/card-course.svg" alt="Course Registration System — ASP.NET Core MVC, EF Core, SQLite" width="100%" />
       </a>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
       <!-- Not linked: the repository is private. Restore the link when it goes public. -->
       <img src="./assets/card-data.svg" alt="Business Directory API — FastAPI, SQLAlchemy, Alembic" width="100%" />
     </td>
-    <td width="50%">
-      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
-      <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
-    </td>
   </tr>
   <tr>
     <td width="50%">
       <!-- Not linked: the repository is private. Restore the link when it goes public. -->
+      <img src="./assets/card-analysis.svg" alt="File Analysis Service — FastAPI, YARA, Celery, Docker" width="100%" />
+    </td>
+    <td width="50%">
+      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
       <img src="./assets/card-redmine.svg" alt="Redmine Deployment — Docker Compose, PostgreSQL, AWS EC2" width="100%" />
     </td>
+  </tr>
+  <tr>
     <td width="50%">
       <a href="https://github.com/kutsibalci/Small-coffee-Shop-Management-App">
         <img src="./assets/card-coffee.svg" alt="Coffee Shop Management — C#, Windows Forms, MySQL" width="100%" />
       </a>
     </td>
-  </tr>
-  <tr>
     <td width="50%">
+      <!-- Not linked: the repository is private. Restore the link when it goes public. -->
       <img src="./assets/card-pansuman.svg" alt="Pansuman Simulator — Unity, URP, C#" width="100%" />
     </td>
-    <td width="50%"></td>
   </tr>
 </table>
 
