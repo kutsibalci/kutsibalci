@@ -12,6 +12,12 @@ Most of what is here started as something I wanted to understand rather than som
 was told to build: how an ORM actually maps a schema, what a request touches between the
 route and the database, what it takes to run a service on a server instead of a laptop.
 
+Some of it has a user who is not me. I build and maintain a **pre-accounting and fleet
+tracking system** in daily use at a haulage company, and I ship **mobile applications** in
+Flutter and React Native — offline-first, because a phone in a truck cab has no network to
+depend on. Alongside that, **peer-to-peer**: a WebRTC mesh where the server only carries
+signalling and the media never touches it.
+
 **Open to internships, junior backend roles and open-source collaboration.**
 
 <br>
@@ -105,52 +111,17 @@ rather than picking one. Sergey Linev, who wrote the web GUI, replied *"Yes, som
 up"*, opened the fix half an hour later, and it merged with two core approvals. No commit under my name — a
 confirmed report instead, which for that class of finding is the honest outcome.
 
-The two I am most interested in are not documentation.
-
-**[apache/kafka#23098](https://github.com/apache/kafka/pull/23098)** — `TokenInformation`, the delegation-token
-class, compares six fields in `equals()` and hashes seven in `hashCode()`. The extra one is `expiryTimestamp`,
-which `equals()` leaves out on purpose: renewing a token does not make it a different token. So two instances
-can be equal and hash differently, which is the one thing `Object.hashCode` forbids — `HashSet` keeps both,
-`HashMap.get` returns null. It is also the class's only non-final field and has a public setter, so an
-instance's hash changes while it sits in a collection. I walked all 500 classes in Kafka's main source that
-declare both methods; this is the only one where `hashCode` reads a field `equals` ignores. The test I added
-fails three of its four cases on trunk and passes with the fix.
-
-**[eclipse-score/baselibs#444](https://github.com/eclipse-score/baselibs/pull/444)** — placement `new` over a
-live member without ending its lifetime, in ISO 26262 ASIL-B code. The issue listed three sites; a sweep found
-six. I did *not* apply the fix the reporter proposed — `static_assert`s showed `score::Result<Value>` is
-move-constructible but not move-assignable for the non-assignable types the code exists to support, so their
-suggestion would not compile. The placement `new` is a deliberate workaround; only the lifetime was wrong.
-Assigned to me by an ETAS
-(Bosch) engineer and queued for review by a five-person panel that includes two from BMW.
-
-Also open: [sixteen links in NVIDIA/CUTLASS](https://github.com/NVIDIA/cutlass/pull/3436) left behind by a
-docs reorganisation; [a trace record in Eclipse S-CORE's
-logger](https://github.com/eclipse-score/logging/pull/253) whose ISO 26262 `Verifies` property names a symbol
-that does not exist — two of its components are a directory and the test file's own basename, so the
-traceability evidence points at nothing while the test still builds and passes;
-[ROOT #23019](https://github.com/root-project/root/pull/23019), four CMake `-depends` variables the build
-never reads; a [bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
-[an issue](https://github.com/nasa/fprime/issues/5570) in [NASA's F´](https://github.com/nasa/fprime) flight
-software; [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs;
-[three Airflow settings](https://github.com/apache/airflow/issues/71259) listed in the public configuration
-reference that no code reads; and [two links that 404 on
-code.visualstudio.com](https://github.com/microsoft/vscode-docs/pull/10120) — where the interesting number
-is what did *not* survive: 69 of 577 site-relative targets have no matching file in the repository, and only
-11 of those actually fail on the site, the rest being served from a different directory, generated at build
-time, or resolved through `redirection.json`.
-
 What I keep relearning here: the patch is the easy part. Proving the claim before making it is the actual
-work. Those eight .NET links came out of thirty-nine candidates; in CUTLASS, ten "broken" links turned out to
-work because GitHub rewrites a leading slash to the repository root — I only learned that by fetching the
-rendered page instead of trusting my reading, and fourteen more were pointer values in sample output that
-happen to match the markdown link grammar exactly. The sweep behind the ROOT and Airflow settings ran against
-systemd first and found nothing at all: all thirteen config parser tables agreed with their man pages, and
-every apparent mismatch was a deliberate compatibility alias or a page shared by `xi:include`. In Eclipse
-S-CORE I validated each claimed symbol against every identifier in the repository — a corpus that contained
-the claim itself, so the check passed and reported zero findings, one of which was real. A sweep that finds
-nothing is a result too, and one that finds plenty is usually wrong. Several findings I was sure about never
-left my machine.
+work. Those eight .NET links came out of thirty-nine candidates. In the VS Code sweep the tool I reached for
+first was the wrong one twice over — GitHub code search is token-based, so it answers a casing question with
+a confident yes no matter which casing you type, and a naive scan flags every editor setting as missing
+because `editor.overtypeCursorStyle` is never written down anywhere, it is assembled at runtime from an
+option name and a prefix. Both had to be understood before a single finding meant anything. The sweep behind
+the ROOT settings ran against systemd first and found nothing at all: all thirteen config parser tables
+agreed with their man pages, and every apparent mismatch was a deliberate compatibility alias or a page
+shared by `xi:include`. A sweep that finds nothing is a result too, and one that finds plenty is usually
+wrong. Several findings I was sure about never left my machine, and what is listed above is what a
+maintainer agreed with — not what I proposed.
 
 <br>
 
@@ -244,6 +215,32 @@ did not exist.
 `TypeScript (strict)` · `Node 24` · `Redis Lua` · `PostgreSQL` · `ffmpeg / HLS` · `k6` ·
 `Prometheus + Grafana` · **77 tests**, including a real Chrome run
 
+### Peer-to-peer, in the same project
+
+The video and voice on top of it do not go through the server at all. Media is a **WebRTC mesh**: every
+participant holds a direct connection to every other one, and the server carries only signalling — offers,
+answers and ICE candidates relayed over the same socket the room already uses. That choice has a ceiling
+written into it. Mesh cost grows with the square of the participants, so it is capped at `MAX_MEDIA_PEERS`;
+past that the answer is an SFU, and pretending otherwise would just move the failure to whoever joins tenth.
+
+Two things I only understood by getting them wrong.
+
+**Who offers.** The first version let the lower id offer and the higher id wait. If the participant who turned
+their camera on happened to be the higher id, they could not offer, and the other side — with no media to
+send — produced an empty offer instead. The connection came up perfectly and carried nothing. It now uses
+**perfect negotiation**: anyone with media may offer, and if both do at once, the *polite* peer rolls its own
+offer back and takes the other's. Politeness is decided by id ordering, so both ends reach the same verdict
+without asking each other.
+
+**Which stream.** I was passing `e.streams[0]` straight up from `ontrack`. Open the microphone, then the
+camera, and renegotiation fires a second event whose stream carries audio only — so the video track arrived,
+decoded fine, and was simply not in the object the UI was rendering. The fix is to keep one `MediaStream` per
+peer and add tracks to it as they arrive. Both bugs looked like connectivity failures and neither was.
+
+The honest limitation: there is public STUN and no TURN. Behind symmetric NAT — corporate networks, some
+mobile carriers — the peers will not find each other, and a real deployment needs a relay such as coturn.
+That is written in the source next to the ICE configuration rather than discovered by whoever runs it.
+
 <br>
 
 ## What testing an old project taught me
@@ -286,6 +283,82 @@ stopped thinking of it as a trick and started looking for the shape.
 
 <br>
 
+## Software someone actually runs — pre-accounting and fleet tracking
+
+<div align="center">
+  <img src="./assets/card-onyuz.svg" alt="Ön Yüz Muhasebe Sistemi — pre-accounting and logistics tracking, private" width="100%" />
+</div>
+
+The one on this page with a user who is not me. **Ön Yüz Muhasebe Sistemi** is a pre-accounting and fleet
+tracking system for a small haulage company: trips, fuel, expenses and vehicle paperwork on one side, current
+accounts, invoicing, cheques and collections on the other, with the link between them being that a month of
+trips is what a customer's invoice is made of. *(Private — it holds a real company's ledger.)*
+
+**Two ways of earning, one invoice model.** Trucks on a standing contract with a factory are billed per trip
+at an agreed rate, so a *Job* is opened once and every trip inherits its customer, route and price. Trucks
+working the spot market have no job at all — each load is a different firm, and at month end the unbilled
+trips for a chosen customer are consolidated into a single invoice. If the same customer gave you both kinds
+of work, both land on the same invoice. Getting that to fall out of one data model, rather than two parallel
+ones with a reconciliation step between them, was most of the design.
+
+Turkish e-invoicing means the output is **UBL-TR XML**, not a PDF with the right words on it — a schema with
+mandatory ordering and identifier rules that the tax authority validates and the customer's accountant
+rejects on sight if it is wrong.
+
+**Deployment is the part I would defend.** The user runs a haulage yard, not a server. So: copy the folder,
+double-click, and a browser opens on `localhost`. A portable Node runtime ships inside the folder, and the
+program touches no registry key, writes nothing to `AppData`, installs no service or startup task, and makes
+no network connection at all. Uninstalling is deleting the folder. Every one of those is a decision to *not*
+use the convenient thing, and together they are why the software can be handed over on a USB stick and
+trusted by someone with no way to audit it.
+
+Node.js server · vanilla JS front end · SQLite · UBL-TR e-invoice · an append-only audit log ·
+reports · a seed script that builds a demo dataset and a reset script that backs up before it wipes
+
+<br>
+
+## Mobile
+
+<div align="center">
+  <img src="./assets/card-mobile.svg" alt="Mobile applications — Flutter, React Native, Expo, offline-first" width="100%" />
+</div>
+
+Four applications, all private, three of them shipping to real users. The common constraint is that a phone
+in the field has no network you can rely on, so state lives on the device and the schema is designed around
+that rather than patched for it afterwards.
+
+**Sefer Defteri** — the driver-side companion to the accounting system above. Trips, documents and records
+entered from the cab, held in on-device SQLite, with expiry reminders as local notifications and an
+export/backup path out. React Native on Expo, in TypeScript, with the database schema and query layer written
+by hand rather than through an ORM.
+
+**Sınav Motoru** — not one exam app but an **engine** for many. A pure-Dart core that knows nothing about any
+particular exam, plus per-exam question banks as remote-versioned JSON and per-exam build flavors, so each
+exam ships as its own Play Store listing off one codebase. Adding an exam is one JSON file, one flavor config
+and one store entry — no new code. Spaced repetition for wrong answers, `sqflite` for progress, offline after
+first load. First product is the Turkish SRC vocational driving certificates; the store ranking research
+behind the one-app-per-exam decision is written down in the repository, because it is the reason the
+architecture looks the way it does.
+
+**Kurye Rota** — courier routing, and so far the honest part is that the routing engine does not exist yet;
+what is finished is the address layer, which turned out to be the hard problem. Couriers get their stops as a
+block of text pasted out of WhatsApp, so the app parses free-form Turkish addresses into province / district
+/ neighbourhood / street / number / recipient. All 81 provinces, ~970 districts and ~50,000 neighbourhoods
+are embedded as JSON and it works with no connection; the 2.7 MB neighbourhood file is loaded on first use
+rather than at startup. Matching is word-based rather than string-based, because searching over the whole
+string destroys the original Turkish characters and leaves you unable to cleanly remove the part that
+matched. Two rules earned themselves: *"X Mah"* blocks district matching, or `Kızılay Mah ... Çankaya Ankara`
+resolves the neighbourhood as "Çankaya" and sends a courier across the city; and when a neighbourhood name
+exists in several districts the app **does not guess** — it puts the candidates on screen as buttons.
+
+**Minik Masal** — an audio story player for small children in Flutter, with a parent gate in front of
+anything a four-year-old should not reach on their own.
+
+`Flutter / Dart` · `React Native / Expo` · `TypeScript` · `SQLite · sqflite · expo-sqlite` ·
+`offline-first` · `local notifications` · `Android build flavors`
+
+<br>
+
 ## Also Building — File Analysis Service
 
 <div align="center">
@@ -312,7 +385,9 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
 | **Messaging** | Transactional outbox, at-least-once delivery, idempotent consumers, dead-letter queues — RabbitMQ driven directly rather than through a framework, because the mechanics are the point |
 | **API design** | Paginated, validated REST endpoints — with ordering that makes pagination stable and ceilings on anything read into memory |
 | **Data modelling** | Normalised schemas, code-first migrations, and constraints in the database rather than only in application code |
-| **Deployment** | Docker Compose and AWS EC2, with credentials from the environment and nothing sensitive published on a port |
+| **Peer-to-peer** | WebRTC mesh with perfect negotiation and glare handling, signalling over an existing socket — including knowing where mesh stops and an SFU has to start |
+| **Mobile** | Flutter and React Native, offline-first with on-device SQLite, and one codebase shipping as several store listings through build flavors |
+| **Deployment** | Docker Compose and AWS EC2 — and, at the other end, software a non-technical user installs by copying a folder, with a portable runtime inside it and nothing written outside it |
 | **Analysis tooling** | Static and dynamic file analysis with YARA and Celery — the area I find most interesting right now |
 
 <br>
@@ -338,6 +413,16 @@ of them means the file is safe. A crash is a good outcome; a false negative is t
       <a href="https://github.com/kutsibalci/concurrent-ticketing">
         <img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing — .NET 10, PostgreSQL, RabbitMQ, Redis" width="100%" />
       </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <!-- Not linked: the repository is private and holds a real company's ledger. -->
+      <img src="./assets/card-onyuz.svg" alt="Ön Yüz Muhasebe Sistemi — Node.js, SQLite, UBL-TR e-invoice" width="100%" />
+    </td>
+    <td width="50%">
+      <!-- Not linked: these repositories are private. -->
+      <img src="./assets/card-mobile.svg" alt="Mobile — Flutter, React Native, Expo, offline-first" width="100%" />
     </td>
   </tr>
   <tr>

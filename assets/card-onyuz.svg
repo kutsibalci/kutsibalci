@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 168" width="440" height="168" role="img" aria-label="Ön Yüz Muhasebe Sistemi — pre-accounting and fleet tracking, Node.js, SQLite, UBL-TR e-invoice (private, in production)">
+  <defs>
+    <clipPath id="oy"><rect x="0.5" y="0.5" width="439" height="167" rx="12"/></clipPath>
+    <pattern id="go" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#30363d" fill-opacity="0.4"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#oy)">
+    <rect width="440" height="168" fill="#0d1117"/>
+    <rect width="440" height="168" fill="url(#go)"/>
+    <circle cx="410" cy="6" r="86" fill="#7ee787" fill-opacity="0.06"/>
+    <rect x="0" y="0" width="4" height="168" fill="#7ee787"/>
+  </g>
+  <rect x="0.5" y="0.5" width="439" height="167" rx="12" fill="none" stroke="#30363d"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
+    <circle cx="392" cy="26" r="3" fill="#8b949e"/>
+    <text x="428" y="30" font-size="9" fill="#6e7681" text-anchor="end">PRIVATE</text>
+
+    <text x="24" y="42" font-size="16" font-weight="700" fill="#e6edf3">Ön Yüz Muhasebe Sistemi</text>
+    <text x="24" y="60" font-size="10" fill="#7ee787" letter-spacing="1">PRE-ACCOUNTING · IN PRODUCTION</text>
+
+    <text x="24" y="88" font-size="11" fill="#8b949e">Trips, fuel and vehicle paperwork on one side, current</text>
+    <text x="24" y="105" font-size="11" fill="#8b949e">accounts, UBL-TR invoicing and collections on the other.</text>
+    <text x="24" y="122" font-size="11" fill="#8b949e">Runs from a copied folder — no install, no network.</text>
+
+    <g font-size="9" fill="#8b949e">
+      <rect x="24"  y="136" width="58" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="53"  y="148" text-anchor="middle">Node.js</text>
+      <rect x="88"  y="136" width="52" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="114" y="148" text-anchor="middle">SQLite</text>
+      <rect x="146" y="136" width="56" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="174" y="148" text-anchor="middle">UBL-TR</text>
+      <rect x="208" y="136" width="76" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="246" y="148" text-anchor="middle">e-Fatura</text>
+      <rect x="290" y="136" width="70" height="18" rx="9" fill="#161b22" stroke="#30363d"/><text x="325" y="148" text-anchor="middle">Portable</text>
+    </g>
+  </g>
+</svg>
