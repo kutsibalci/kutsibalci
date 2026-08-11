@@ -340,16 +340,20 @@ first load. First product is the Turkish SRC vocational driving certificates; th
 behind the one-app-per-exam decision is written down in the repository, because it is the reason the
 architecture looks the way it does.
 
-**Kurye Rota** — courier routing, and so far the honest part is that the routing engine does not exist yet;
-what is finished is the address layer, which turned out to be the hard problem. Couriers get their stops as a
-block of text pasted out of WhatsApp, so the app parses free-form Turkish addresses into province / district
-/ neighbourhood / street / number / recipient. All 81 provinces, ~970 districts and ~50,000 neighbourhoods
-are embedded as JSON and it works with no connection; the 2.7 MB neighbourhood file is loaded on first use
-rather than at startup. Matching is word-based rather than string-based, because searching over the whole
-string destroys the original Turkish characters and leaves you unable to cleanly remove the part that
-matched. Two rules earned themselves: *"X Mah"* blocks district matching, or `Kızılay Mah ... Çankaya Ankara`
-resolves the neighbourhood as "Çankaya" and sends a courier across the city; and when a neighbourhood name
-exists in several districts the app **does not guess** — it puts the candidates on screen as buttons.
+**Kurye Rota** — courier routing, where the ordering turned out to be the easy half. Stops arrive as a block
+of text pasted out of WhatsApp, so the app parses free-form Turkish addresses into province / district /
+neighbourhood / street / number / recipient. All 81 provinces, ~970 districts and ~50,000 neighbourhoods are
+embedded as JSON and it works with no connection; the 2.7 MB neighbourhood file is loaded on first use rather
+than at startup. Matching is word-based rather than string-based, because searching over the whole string
+destroys the original Turkish characters and leaves you unable to cleanly remove the part that matched. Two
+rules earned themselves: *"X Mah"* blocks district matching, or `Kızılay Mah ... Çankaya Ankara` resolves the
+neighbourhood as "Çankaya" and sends a courier across the city; and when a neighbourhood name exists in
+several districts the app **does not guess** — it puts the candidates on screen as buttons. Coordinates come
+from a three-step cascade — local address book, then Nominatim, then Google — so the paid provider is
+reached only when the two free ones fail, and a result below district-level confidence is rejected rather
+than shown. Ordering is nearest-neighbour followed by 2-opt: an open-route TSP, milliseconds for a hundred
+stops, and a couple of percent off optimal, which is the right trade when a courier is standing in the street
+waiting for the list.
 
 **Minik Masal** — an audio story player for small children in Flutter, with a parent gate in front of
 anything a four-year-old should not reach on their own.
