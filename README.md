@@ -213,7 +213,7 @@ thousand socket event loops in one process. Without server-side numbers I would 
 did not exist.
 
 `TypeScript (strict)` · `Node 24` · `Redis Lua` · `PostgreSQL` · `ffmpeg / HLS` · `k6` ·
-`Prometheus + Grafana` · **77 tests**, including a real Chrome run
+`Prometheus + Grafana` · **104 tests**, including a real Chrome run
 
 ### Peer-to-peer, in the same project
 
@@ -323,9 +323,9 @@ reports · a seed script that builds a demo dataset and a reset script that back
   <img src="./assets/card-mobile.svg" alt="Mobile applications — Flutter, React Native, Expo, offline-first" width="100%" />
 </div>
 
-Four applications, all private, three of them shipping to real users. The common constraint is that a phone
-in the field has no network you can rely on, so state lives on the device and the schema is designed around
-that rather than patched for it afterwards.
+Four applications, all private, at different stages of finished. The common constraint is that a phone in the
+field has no network you can rely on, so state lives on the device and the schema is designed around that
+rather than patched for it afterwards.
 
 **Sefer Defteri** — the driver-side companion to the accounting system above. Trips, documents and records
 entered from the cab, held in on-device SQLite, with expiry reminders as local notifications and an
