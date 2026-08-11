@@ -1,68 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 230" width="900" height="230" role="img" aria-label="Hüseyin Kutsi Balcı — Backend Development Student at Anadolu University">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250" role="img" aria-label="Hüseyin Kutsi Balcı — Backend Development Student, Anadolu University, İzmir Türkiye. 8 upstream merges, 285 tests passing, 1 system with real users, 4 mobile apps.">
   <defs>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#79c0ff" stop-opacity="0.15"/>
-      <stop offset="50%" stop-color="#79c0ff" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#79c0ff" stop-opacity="0.15"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#79c0ff"/>
-      <stop offset="60%" stop-color="#7ee787"/>
-      <stop offset="100%" stop-color="#d2a8ff"/>
-    </linearGradient>
-    <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#30363d" fill-opacity="0.55"/>
+    <pattern id="hg" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.45"/>
     </pattern>
-    <clipPath id="card">
-      <rect x="0.5" y="0.5" width="899" height="229" rx="14"/>
-    </clipPath>
+    <clipPath id="hc"><rect x="0.5" y="0.5" width="899" height="249" rx="14"/></clipPath>
+    <linearGradient id="hglow" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#58a6ff" stop-opacity="0"/>
+    </linearGradient>
   </defs>
 
-  <g clip-path="url(#card)">
-    <rect width="900" height="230" fill="#0d1117"/>
-    <rect width="900" height="230" fill="url(#grid)"/>
-    <circle cx="720" cy="30" r="180" fill="#79c0ff" fill-opacity="0.045"/>
-    <circle cx="820" cy="200" r="130" fill="#7ee787" fill-opacity="0.035"/>
+  <g clip-path="url(#hc)">
+    <rect width="900" height="250" fill="#07080b"/>
+    <rect width="900" height="250" fill="url(#hg)"/>
+    <rect width="900" height="250" fill="url(#hglow)"/>
+    <rect x="0" y="0" width="3" height="250" fill="#58a6ff"/>
   </g>
-  <rect x="0.5" y="0.5" width="899" height="229" rx="14" fill="none" stroke="#30363d"/>
-  <rect x="0" y="0" width="900" height="3" fill="url(#accent)" clip-path="url(#card)"/>
+  <rect x="0.5" y="0.5" width="899" height="249" rx="14" fill="none" stroke="#1e242c"/>
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
-    <text x="48" y="72" font-size="13" fill="#8b949e" letter-spacing="2.5">BACKEND · DEVELOPMENT</text>
+    <text x="44" y="72" font-size="30" font-weight="700" fill="#e8edf4" letter-spacing="-0.5">Hüseyin Kutsi Balcı</text>
+    <text x="44" y="102" font-size="13.5" fill="#58a6ff" letter-spacing="0.5">Backend Development Student · Anadolu University</text>
+    <text x="44" y="126" font-size="12" fill="#8792a2">İzmir, Türkiye  ·  balcihkutsi@gmail.com</text>
 
-    <text x="48" y="118" font-size="34" font-weight="700" fill="#e6edf3">Hüseyin Kutsi Balcı</text>
+    <rect x="44" y="144" width="212" height="22" rx="11" fill="#0d1a12" stroke="#1f4a2e"/>
+    <circle cx="60" cy="155" r="3.5" fill="#3fb950"/>
+    <text x="72" y="159" font-size="10.5" fill="#5fd97a" letter-spacing="0.6">OPEN TO INTERNSHIPS · JUNIOR</text>
 
-    <rect x="48" y="134" width="54" height="3" rx="1.5" fill="url(#accent)"/>
+    <line x1="44" y1="190" x2="856" y2="190" stroke="#1a2029"/>
 
-    <text x="48" y="166" font-size="15" fill="#79c0ff">ASP.NET&#160;Core · FastAPI · PostgreSQL · Docker</text>
-    <text x="48" y="192" font-size="13" fill="#8b949e">Anadolu University · Based in İzmir, Türkiye</text>
-  </g>
+    <g text-anchor="middle">
+      <text x="145" y="220" font-size="21" font-weight="700" fill="#e8edf4">8</text>
+      <text x="145" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">UPSTREAM MERGES</text>
 
-  <!-- request path diagram -->
-  <g transform="translate(596, 66)">
-    <path id="flow" d="M 24 42 H 236" stroke="url(#edge)" stroke-width="1.5" fill="none"/>
+      <text x="348" y="220" font-size="21" font-weight="700" fill="#e8edf4">285</text>
+      <text x="348" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">TESTS PASSING</text>
 
-    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="9" fill="#8b949e" text-anchor="middle">
-      <g>
-        <rect x="0" y="26" width="48" height="32" rx="7" fill="#161b22" stroke="#30363d"/>
-        <text x="24" y="46" fill="#e6edf3">client</text>
-        <text x="24" y="76">HTTP</text>
-      </g>
-      <g>
-        <rect x="106" y="26" width="48" height="32" rx="7" fill="#161b22" stroke="#79c0ff" stroke-opacity="0.5"/>
-        <text x="130" y="46" fill="#79c0ff">api</text>
-        <text x="130" y="76">REST</text>
-      </g>
-      <g>
-        <rect x="212" y="26" width="48" height="32" rx="7" fill="#161b22" stroke="#30363d"/>
-        <text x="236" y="46" fill="#e6edf3">db</text>
-        <text x="236" y="76">SQL</text>
-      </g>
+      <text x="551" y="220" font-size="21" font-weight="700" fill="#e8edf4">1</text>
+      <text x="551" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">SYSTEM WITH REAL USERS</text>
+
+      <text x="754" y="220" font-size="21" font-weight="700" fill="#e8edf4">4</text>
+      <text x="754" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">MOBILE APPS</text>
     </g>
-
-    <circle r="3" fill="#7ee787">
-      <animateMotion dur="2.8s" repeatCount="indefinite" path="M 24 42 H 236"/>
-      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="2.8s" repeatCount="indefinite"/>
-    </circle>
+    <line x1="246" y1="202" x2="246" y2="240" stroke="#1a2029"/>
+    <line x1="449" y1="202" x2="449" y2="240" stroke="#1a2029"/>
+    <line x1="652" y1="202" x2="652" y2="240" stroke="#1a2029"/>
   </g>
 </svg>

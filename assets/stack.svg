@@ -1,91 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 404" width="900" height="404" role="img" aria-label="Technology stack: languages, backend frameworks, data stores, infrastructure, mobile, real-time and peer-to-peer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" width="900" height="240" role="img" aria-label="Technology stack: languages, backend, data, mobile and real-time, infrastructure">
   <defs>
-    <pattern id="g2" width="26" height="26" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#30363d" fill-opacity="0.4"/>
+    <pattern id="sg" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.4"/>
     </pattern>
-    <clipPath id="c2"><rect x="0.5" y="0.5" width="899" height="403" rx="14"/></clipPath>
+    <clipPath id="sc"><rect x="0.5" y="0.5" width="899" height="239" rx="14"/></clipPath>
   </defs>
 
-  <g clip-path="url(#c2)">
-    <rect width="900" height="404" fill="#0d1117"/>
-    <rect width="900" height="404" fill="url(#g2)"/>
+  <g clip-path="url(#sc)">
+    <rect width="900" height="240" fill="#07080b"/>
+    <rect width="900" height="240" fill="url(#sg)"/>
   </g>
-  <rect x="0.5" y="0.5" width="899" height="403" rx="14" fill="none" stroke="#30363d"/>
+  <rect x="0.5" y="0.5" width="899" height="239" rx="14" fill="none" stroke="#1e242c"/>
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
-    <text x="36" y="44" font-size="12" fill="#8b949e" letter-spacing="2.5">TECHNOLOGY STACK</text>
-    <line x1="36" y1="58" x2="864" y2="58" stroke="#21262d"/>
+    <text x="36" y="40" font-size="11" fill="#7a8595" letter-spacing="2.5">STACK</text>
+    <line x1="36" y1="54" x2="864" y2="54" stroke="#1a2029"/>
 
-    <!-- column 1 -->
-    <g transform="translate(36, 92)">
-      <text font-size="11" fill="#79c0ff" letter-spacing="1.5">LANGUAGES</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">C#</text>
-        <text y="54">Python</text>
-        <text y="78">TypeScript · JavaScript</text>
-        <text y="102">Dart</text>
-        <text y="126">SQL</text>
-        <text y="150">HTML · CSS</text>
+    <g transform="translate(36, 84)">
+      <text font-size="10" fill="#58a6ff" letter-spacing="1.4">LANGUAGES</text>
+      <g font-size="12.5" fill="#dbe3ec">
+        <text y="28">C#</text>
+        <text y="50">Python</text>
+        <text y="72">TypeScript</text>
+        <text y="94">Dart</text>
+        <text y="116">SQL</text>
       </g>
     </g>
-    <line x1="228" y1="80" x2="228" y2="286" stroke="#21262d"/>
+    <line x1="196" y1="72" x2="196" y2="212" stroke="#1a2029"/>
 
-    <!-- column 2 -->
-    <g transform="translate(264, 92)">
-      <text font-size="11" fill="#7ee787" letter-spacing="1.5">BACKEND</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">ASP.NET Core MVC</text>
-        <text y="54">Entity Framework Core</text>
-        <text y="78">FastAPI</text>
-        <text y="102">SQLAlchemy · Pydantic</text>
-        <text y="126">Node.js</text>
-        <text y="150">Celery</text>
+    <g transform="translate(228, 84)">
+      <text font-size="10" fill="#4db6ac" letter-spacing="1.4">BACKEND</text>
+      <g font-size="12.5" fill="#dbe3ec">
+        <text y="28">ASP.NET Core · EF Core</text>
+        <text y="50">FastAPI · SQLAlchemy</text>
+        <text y="72">Node.js</text>
+        <text y="94">Celery</text>
+        <text y="116">REST · JWT</text>
       </g>
     </g>
-    <line x1="500" y1="80" x2="500" y2="286" stroke="#21262d"/>
+    <line x1="424" y1="72" x2="424" y2="212" stroke="#1a2029"/>
 
-    <!-- column 3 -->
-    <g transform="translate(536, 92)">
-      <text font-size="11" fill="#d2a8ff" letter-spacing="1.5">DATA</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">PostgreSQL</text>
-        <text y="54">MySQL</text>
-        <text y="78">SQLite</text>
-        <text y="102">Redis</text>
-        <text y="126">RabbitMQ</text>
+    <g transform="translate(456, 84)">
+      <text font-size="10" fill="#7fb069" letter-spacing="1.4">DATA &amp; MESSAGING</text>
+      <g font-size="12.5" fill="#dbe3ec">
+        <text y="28">PostgreSQL · MySQL</text>
+        <text y="50">SQLite</text>
+        <text y="72">Redis · Redis Lua</text>
+        <text y="94">RabbitMQ</text>
+        <text y="116">outbox · idempotency</text>
       </g>
     </g>
-    <line x1="686" y1="80" x2="686" y2="286" stroke="#21262d"/>
+    <line x1="652" y1="72" x2="652" y2="212" stroke="#1a2029"/>
 
-    <!-- column 4 -->
-    <g transform="translate(722, 92)">
-      <text font-size="11" fill="#ffa657" letter-spacing="1.5">INFRA</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">Docker</text>
-        <text y="54">Compose</text>
-        <text y="78">AWS EC2</text>
-        <text y="102">Linux</text>
-        <text y="126">Git · CI</text>
-      </g>
-    </g>
-
-    <line x1="36" y1="286" x2="864" y2="286" stroke="#21262d"/>
-
-    <!-- second band -->
-    <g transform="translate(36, 316)">
-      <text font-size="11" fill="#f778ba" letter-spacing="1.5">MOBILE</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">Flutter · sqflite</text>
-        <text y="54">React Native · Expo · expo-sqlite</text>
-      </g>
-    </g>
-    <line x1="404" y1="304" x2="404" y2="378" stroke="#21262d"/>
-
-    <g transform="translate(440, 316)">
-      <text font-size="11" fill="#56d4dd" letter-spacing="1.5">REAL-TIME &amp; P2P</text>
-      <g font-size="13" fill="#e6edf3">
-        <text y="30">WebSocket · Socket.IO · Redis Pub/Sub</text>
-        <text y="54">WebRTC mesh · STUN/ICE · ffmpeg HLS</text>
+    <g transform="translate(684, 84)">
+      <text font-size="10" fill="#d4a259" letter-spacing="1.4">MOBILE · RT · INFRA</text>
+      <g font-size="12.5" fill="#dbe3ec">
+        <text y="28">Flutter · React Native</text>
+        <text y="50">WebSocket · WebRTC</text>
+        <text y="72">Docker · Compose</text>
+        <text y="94">AWS EC2 · Linux</text>
+        <text y="116">GitHub Actions</text>
       </g>
     </g>
   </g>
