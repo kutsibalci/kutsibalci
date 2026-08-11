@@ -18,13 +18,14 @@ route and the database, what it takes to run a service on a server instead of a 
 
 ## Open Source
 
-Seven contributions merged into projects I had no prior connection to — two into
+Eight contributions merged into projects I had no prior connection to — two into
 **[CERN's ROOT](https://root.cern)**, and one each into
 **[.NET runtime](https://github.com/dotnet/runtime)**, the Rust project's
 **[GCC codegen backend](https://github.com/rust-lang/rustc_codegen_gcc)**,
 **[systemd](https://github.com/systemd/systemd)**,
-**[Eclipse S-CORE](https://github.com/eclipse-score)** and
-**[Apache Airflow](https://github.com/apache/airflow)**.
+**[Eclipse S-CORE](https://github.com/eclipse-score)**,
+**[Apache Airflow](https://github.com/apache/airflow)** and
+**[the VS Code documentation](https://github.com/microsoft/vscode-docs)**.
 
 **[root-project/root#23002](https://github.com/root-project/root/pull/23002)** — `tmva/tmva/inc/LinkDef5.h`
 had been unreachable since 2015. The commit that split TMVA into `libTMVA` and `libTMVAGui` dropped that
@@ -77,6 +78,23 @@ directory that Git stores as a **symlink blob**, and GitHub will not traverse on
 the paths resolve, browse it on the web and they do not. That is why nobody had noticed. Three hundred and
 seventy-two candidates went in; twenty came out.
 
+**[microsoft/vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119)** — three `setting(...)`
+macros naming a setting ID that VS Code does not register, because the casing is wrong: the docs write
+`chat.mcp.autoStart` and `Microsoft-sovereign-cloud.environment`, the product registers both in lowercase.
+`ConfigurationRegistry` indexes settings in a plain record keyed by the exact ID string, so a differently-cased
+key is not the same setting spelled differently — it is an unregistered one. Pasting the documented ID into
+`settings.json` gets you the *Unknown Configuration Setting* marker and no behaviour, and on the rendered page
+the macro becomes an interactive control that carries the bad ID verbatim. What made it a check rather than a
+guess: the four sibling `chat.mcp.*` rows in the same table match the source exactly, and the default shown in
+the offending row matches the real setting's enum — so the row describes the right setting and only the ID is
+misspelled. I resolved all 771 distinct IDs behind the repository's 1,760 macros against what
+`microsoft/vscode` actually registers, which needed two traps handled first: editor settings never appear as a
+full literal, so `editor.overtypeCursorStyle` is assembled from an `EditorOption` name and reads as missing to
+a naive sweep; and GitHub code search is token-based, so searching `chat.mcp.autoStart` happily matches
+`chat.mcp.autostart` and cannot settle a casing question at all. The comparison had to run locally against a
+case-sensitive index. A fourth instance lives in release notes for a shipped version, which are a dated record
+rather than a document to correct, so I left it alone and said so.
+
 Not every finding should be a pull request.
 **[root-project/root#23036](https://github.com/root-project/root/issues/23036)** — `system.rootrc` ships
 three settings that nothing in ROOT reads. `WebGui.HttpLoopback` is documented in *two* places while
@@ -114,9 +132,13 @@ traceability evidence points at nothing while the test still builds and passes;
 [ROOT #23019](https://github.com/root-project/root/pull/23019), four CMake `-depends` variables the build
 never reads; a [bare-`except` fix](https://github.com/nasa/fprime-gds/pull/333) and
 [an issue](https://github.com/nasa/fprime/issues/5570) in [NASA's F´](https://github.com/nasa/fprime) flight
-software; [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs; and
+software; [two stale paths](https://github.com/llvm/llvm-project/pull/213994) in the LLVM docs;
 [three Airflow settings](https://github.com/apache/airflow/issues/71259) listed in the public configuration
-reference that no code reads.
+reference that no code reads; and [two links that 404 on
+code.visualstudio.com](https://github.com/microsoft/vscode-docs/pull/10120) — where the interesting number
+is what did *not* survive: 69 of 577 site-relative targets have no matching file in the repository, and only
+11 of those actually fail on the site, the rest being served from a different directory, generated at build
+time, or resolved through `redirection.json`.
 
 What I keep relearning here: the patch is the easy part. Proving the claim before making it is the actual
 work. Those eight .NET links came out of thirty-nine candidates; in CUTLASS, ten "broken" links turned out to
