@@ -289,7 +289,7 @@ stopped thinking of it as a trick and started looking for the shape.
   <img src="./assets/card-onyuz.svg" alt="Ön Yüz Muhasebe Sistemi — pre-accounting and logistics tracking, private" width="100%" />
 </div>
 
-The one on this page with a user who is not me. **Ön Yüz Muhasebe Sistemi** is a pre-accounting and fleet
+**Ön Yüz Muhasebe Sistemi** is a pre-accounting and fleet
 tracking system for a small haulage company: trips, fuel, expenses and vehicle paperwork on one side, current
 accounts, invoicing, cheques and collections on the other, with the link between them being that a month of
 trips is what a customer's invoice is made of. *(Private — it holds a real company's ledger.)*
