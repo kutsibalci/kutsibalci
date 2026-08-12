@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 176" width="440" height="176" role="img" aria-label="Concurrent Ticketing — .NET 10, PostgreSQL, RabbitMQ, Redis. Public repository.">
   <defs>
+    <linearGradient id="bs" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0"/><stop offset="50%" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
     <clipPath id="c1"><rect x="0.5" y="0.5" width="439" height="175" rx="12"/></clipPath>
     <pattern id="p1" width="26" height="26" patternUnits="userSpaceOnUse">
       <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.4"/>
@@ -8,14 +9,16 @@
       @keyframes crise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes cgrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
       @keyframes cping { 0% { r: 4; opacity: .5; } 70% { r: 10; opacity: 0; } 100% { r: 10; opacity: 0; } }
+      @keyframes cshine { 0% { transform: translateY(-64px); } 55%, 100% { transform: translateY(176px); } }
       .r  { opacity: 0; animation: crise .55s cubic-bezier(.2,.75,.3,1) forwards; }
-      .d1 { animation-delay: .08s } .d2 { animation-delay: .16s }
-      .d3 { animation-delay: .24s } .d4 { animation-delay: .34s }
-      .bar  { transform-box: view-box; transform-origin: 0 0; animation: cgrow .6s cubic-bezier(.2,.75,.3,1) forwards; }
-      .ping { animation: cping 3s ease-out infinite; }
+      .d1 { animation-delay: 0.08s } .d2 { animation-delay: 0.16s }
+      .d3 { animation-delay: 0.24s } .d4 { animation-delay: 0.34s }
+      .bar  { transform-box: view-box; transform-origin: 0 0; animation: cgrow .6s 0.00s cubic-bezier(.2,.75,.3,1) both; }
+      .ping  { animation: cping 3s ease-out infinite; }
+      .shine { animation: cshine 6s 1.4s ease-in-out infinite; }
       @media (prefers-reduced-motion: reduce) {
         .r, .bar { opacity: 1; transform: none; animation: none; }
-        .ping { animation: none; opacity: 0; }
+        .ping, .shine { animation: none; opacity: 0; }
       }
     </style>
   </defs>
@@ -24,6 +27,7 @@
     <rect width="440" height="176" fill="url(#p1)"/>
     <circle cx="416" cy="0" r="92" fill="#58a6ff" fill-opacity="0.055"/>
     <rect class="bar" x="0" y="0" width="3" height="176" fill="#58a6ff"/>
+    <rect class="shine" x="0" y="0" width="3" height="64" fill="url(#bs)"/>
   </g>
   <rect x="0.5" y="0.5" width="439" height="175" rx="12" fill="none" stroke="#1e242c"/>
 
