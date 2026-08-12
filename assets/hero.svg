@@ -8,39 +8,76 @@
       <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.10"/>
       <stop offset="60%" stop-color="#58a6ff" stop-opacity="0"/>
     </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#58a6ff" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#58a6ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+    </linearGradient>
+
+    <style>
+      @keyframes rise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+      @keyframes widen { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @keyframes ping { 0% { r: 4; opacity: .55; } 70% { r: 11; opacity: 0; } 100% { r: 11; opacity: 0; } }
+      @keyframes drift { 0% { transform: translateX(-320px); } 100% { transform: translateX(900px); } }
+
+      .r  { opacity: 0; animation: rise .65s cubic-bezier(.2,.75,.3,1) forwards; }
+      .d1 { animation-delay: .10s } .d2 { animation-delay: .20s } .d3 { animation-delay: .30s }
+      .d4 { animation-delay: .42s } .d5 { animation-delay: .60s } .d6 { animation-delay: .70s }
+      .d7 { animation-delay: .80s } .d8 { animation-delay: .90s }
+
+      .bar   { transform-box: view-box; transform-origin: 0 0; animation: grow .7s cubic-bezier(.2,.75,.3,1) forwards; }
+      .rule  { transform-box: view-box; transform-origin: 44px 190px; animation: widen .9s .45s cubic-bezier(.2,.75,.3,1) both; }
+      .ping  { animation: ping 2.6s ease-out infinite; }
+      .sweep { animation: drift 7s 1s linear infinite; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .r, .bar, .rule { opacity: 1; transform: none; animation: none; }
+        .ping, .sweep { animation: none; opacity: 0; }
+      }
+    </style>
   </defs>
 
   <g clip-path="url(#hc)">
     <rect width="900" height="250" fill="#07080b"/>
     <rect width="900" height="250" fill="url(#hg)"/>
     <rect width="900" height="250" fill="url(#hglow)"/>
-    <rect x="0" y="0" width="3" height="250" fill="#58a6ff"/>
+    <rect class="bar" x="0" y="0" width="3" height="250" fill="#58a6ff"/>
+    <rect class="sweep" x="0" y="0" width="320" height="1.5" fill="url(#sweep)"/>
   </g>
   <rect x="0.5" y="0.5" width="899" height="249" rx="14" fill="none" stroke="#1e242c"/>
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
-    <text x="44" y="72" font-size="30" font-weight="700" fill="#e8edf4" letter-spacing="-0.5">Hüseyin Kutsi Balcı</text>
-    <text x="44" y="102" font-size="13.5" fill="#58a6ff" letter-spacing="0.5">Backend Development Student · Anadolu University</text>
-    <text x="44" y="126" font-size="12" fill="#8792a2">İzmir, Türkiye  ·  balcihkutsi@gmail.com</text>
+    <text class="r d1" x="44" y="72" font-size="30" font-weight="700" fill="#e8edf4" letter-spacing="-0.5">Hüseyin Kutsi Balcı</text>
+    <text class="r d2" x="44" y="102" font-size="13.5" fill="#58a6ff" letter-spacing="0.5">Backend Development Student · Anadolu University</text>
+    <text class="r d3" x="44" y="126" font-size="12" fill="#8792a2">İzmir, Türkiye  ·  balcihkutsi@gmail.com</text>
 
-    <rect x="44" y="144" width="212" height="22" rx="11" fill="#0d1a12" stroke="#1f4a2e"/>
-    <circle cx="60" cy="155" r="3.5" fill="#3fb950"/>
-    <text x="72" y="159" font-size="10.5" fill="#5fd97a" letter-spacing="0.6">OPEN TO INTERNSHIPS · JUNIOR</text>
+    <g class="r d4">
+      <rect x="44" y="144" width="212" height="22" rx="11" fill="#0d1a12" stroke="#1f4a2e"/>
+      <circle class="ping" cx="60" cy="155" r="4" fill="#3fb950"/>
+      <circle cx="60" cy="155" r="3.5" fill="#3fb950"/>
+      <text x="72" y="159" font-size="10.5" fill="#5fd97a" letter-spacing="0.6">OPEN TO INTERNSHIPS · JUNIOR</text>
+    </g>
 
-    <line x1="44" y1="190" x2="856" y2="190" stroke="#1a2029"/>
+    <line class="rule" x1="44" y1="190" x2="856" y2="190" stroke="#1a2029"/>
 
     <g text-anchor="middle">
-      <text x="145" y="220" font-size="21" font-weight="700" fill="#e8edf4">8</text>
-      <text x="145" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">UPSTREAM MERGES</text>
-
-      <text x="348" y="220" font-size="21" font-weight="700" fill="#e8edf4">285</text>
-      <text x="348" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">TESTS PASSING</text>
-
-      <text x="551" y="220" font-size="21" font-weight="700" fill="#e8edf4">1</text>
-      <text x="551" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">SYSTEM WITH REAL USERS</text>
-
-      <text x="754" y="220" font-size="21" font-weight="700" fill="#e8edf4">4</text>
-      <text x="754" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">MOBILE APPS</text>
+      <g class="r d5">
+        <text x="145" y="220" font-size="21" font-weight="700" fill="#e8edf4">8</text>
+        <text x="145" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">UPSTREAM MERGES</text>
+      </g>
+      <g class="r d6">
+        <text x="348" y="220" font-size="21" font-weight="700" fill="#e8edf4">285</text>
+        <text x="348" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">TESTS PASSING</text>
+      </g>
+      <g class="r d7">
+        <text x="551" y="220" font-size="21" font-weight="700" fill="#e8edf4">1</text>
+        <text x="551" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">SYSTEM WITH REAL USERS</text>
+      </g>
+      <g class="r d8">
+        <text x="754" y="220" font-size="21" font-weight="700" fill="#e8edf4">4</text>
+        <text x="754" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">MOBILE APPS</text>
+      </g>
     </g>
     <line x1="246" y1="202" x2="246" y2="240" stroke="#1a2029"/>
     <line x1="449" y1="202" x2="449" y2="240" stroke="#1a2029"/>

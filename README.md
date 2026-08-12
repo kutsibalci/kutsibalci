@@ -4,16 +4,28 @@
 
 <br>
 
-I write backend systems and ship them. Usually that means the schema first, then the API, then
-the container it runs in.
+**I build backend systems, and I prove they work before I say they do.**
 
-The project I spend most time on is a pre-accounting and logistics system for a haulage business.
-It already has people using it daily, and I am still developing it — right now I am going through
-it closing the gaps I found once it met real data. Besides that I build mobile apps in Flutter and
-React Native, and I contribute to open source: **eight of my patches are merged** into ROOT, .NET,
-systemd, Airflow, VS Code and others.
+Eight of my patches are merged into projects I had no prior connection to: CERN's **ROOT**,
+**.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** documentation. Getting a
+patch into any of them means convincing a maintainer who has never heard of you, with evidence.
+
+The system I spend most time on is a pre-accounting and logistics program for a haulage business.
+People use it every day while I keep developing it — right now I am closing the gaps that only
+showed up once it met real data. I also ship mobile apps in Flutter and React Native, and I have
+taken a real-time service from one instance to two and measured exactly what that bought.
 
 **Looking for an internship or a junior backend role.**
+
+### Measured, not asserted
+
+| The claim | What the number says |
+|---|---|
+| A seat cannot be sold twice | 20 concurrent requests, one seat → **1 sale, 19 × 409**, one held seat in the database |
+| It scales horizontally | 2,500 connections → p95 **258 ms** on one instance, **14 ms** on two |
+| Course capacity holds under load | 15 applications, capacity 5 → old logic enrolled **15**, current logic enrolls **5** |
+| Route ordering is worth having | 10 real stops in Kadıköy → **44.3 km** as entered, **14.6 km** reordered |
+| The tests actually run | **285** passing across my repositories, on every push |
 
 <br>
 

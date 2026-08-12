@@ -4,6 +4,15 @@
       <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.4"/>
     </pattern>
     <clipPath id="sc"><rect x="0.5" y="0.5" width="899" height="239" rx="14"/></clipPath>
+    <style>
+      @keyframes srise { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes swiden { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      .col { opacity: 0; animation: srise .6s cubic-bezier(.2,.75,.3,1) forwards; }
+      .k1 { animation-delay: .10s } .k2 { animation-delay: .22s }
+      .k3 { animation-delay: .34s } .k4 { animation-delay: .46s }
+      .hr { transform-box: view-box; transform-origin: 36px 54px; animation: swiden .8s cubic-bezier(.2,.75,.3,1) both; }
+      @media (prefers-reduced-motion: reduce) { .col, .hr { opacity: 1; transform: none; animation: none; } }
+    </style>
   </defs>
 
   <g clip-path="url(#sc)">
@@ -14,9 +23,9 @@
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
     <text x="36" y="40" font-size="11" fill="#7a8595" letter-spacing="2.5">STACK</text>
-    <line x1="36" y1="54" x2="864" y2="54" stroke="#1a2029"/>
+    <line class="hr" x1="36" y1="54" x2="864" y2="54" stroke="#1a2029"/>
 
-    <g transform="translate(36, 84)">
+    <g class="col k1" transform="translate(36, 84)">
       <text font-size="10" fill="#58a6ff" letter-spacing="1.4">LANGUAGES</text>
       <g font-size="12.5" fill="#dbe3ec">
         <text y="28">C#</text>
@@ -28,7 +37,7 @@
     </g>
     <line x1="196" y1="72" x2="196" y2="212" stroke="#1a2029"/>
 
-    <g transform="translate(228, 84)">
+    <g class="col k2" transform="translate(228, 84)">
       <text font-size="10" fill="#4db6ac" letter-spacing="1.4">BACKEND</text>
       <g font-size="12.5" fill="#dbe3ec">
         <text y="28">ASP.NET Core · EF Core</text>
@@ -40,7 +49,7 @@
     </g>
     <line x1="424" y1="72" x2="424" y2="212" stroke="#1a2029"/>
 
-    <g transform="translate(456, 84)">
+    <g class="col k3" transform="translate(456, 84)">
       <text font-size="10" fill="#7fb069" letter-spacing="1.4">DATA &amp; MESSAGING</text>
       <g font-size="12.5" fill="#dbe3ec">
         <text y="28">PostgreSQL · MySQL</text>
@@ -52,7 +61,7 @@
     </g>
     <line x1="652" y1="72" x2="652" y2="212" stroke="#1a2029"/>
 
-    <g transform="translate(684, 84)">
+    <g class="col k4" transform="translate(684, 84)">
       <text font-size="10" fill="#d4a259" letter-spacing="1.4">MOBILE · RT · INFRA</text>
       <g font-size="12.5" fill="#dbe3ec">
         <text y="28">Flutter · React Native</text>

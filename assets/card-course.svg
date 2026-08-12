@@ -4,27 +4,41 @@
     <pattern id="p6" width="26" height="26" patternUnits="userSpaceOnUse">
       <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.4"/>
     </pattern>
+    <style>
+      @keyframes crise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes cgrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+      @keyframes cping { 0% { r: 4; opacity: .5; } 70% { r: 10; opacity: 0; } 100% { r: 10; opacity: 0; } }
+      .r  { opacity: 0; animation: crise .55s cubic-bezier(.2,.75,.3,1) forwards; }
+      .d1 { animation-delay: .08s } .d2 { animation-delay: .16s }
+      .d3 { animation-delay: .24s } .d4 { animation-delay: .34s }
+      .bar  { transform-box: view-box; transform-origin: 0 0; animation: cgrow .6s cubic-bezier(.2,.75,.3,1) forwards; }
+      .ping { animation: cping 3s ease-out infinite; }
+      @media (prefers-reduced-motion: reduce) {
+        .r, .bar { opacity: 1; transform: none; animation: none; }
+        .ping { animation: none; opacity: 0; }
+      }
+    </style>
   </defs>
   <g clip-path="url(#c6)">
     <rect width="440" height="176" fill="#0a0c10"/>
     <rect width="440" height="176" fill="url(#p6)"/>
     <circle cx="416" cy="0" r="92" fill="#58a6ff" fill-opacity="0.055"/>
-    <rect x="0" y="0" width="3" height="176" fill="#58a6ff"/>
+    <rect class="bar" x="0" y="0" width="3" height="176" fill="#58a6ff"/>
   </g>
   <rect x="0.5" y="0.5" width="439" height="175" rx="12" fill="none" stroke="#1e242c"/>
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
-    <circle cx="390" cy="26" r="3.5" fill="#3fb950"/>
+    <circle class="ping" cx="390" cy="26" r="4" fill="#3fb950"/><circle cx="390" cy="26" r="3.5" fill="#3fb950"/>
     <text x="428" y="30" font-size="9" fill="#6d7683" text-anchor="end">PUBLIC</text>
 
-    <text x="24" y="46" font-size="15.5" font-weight="700" fill="#e8edf4">Course Registration System</text>
-    <text x="24" y="64" font-size="9.5" fill="#58a6ff" letter-spacing="1.1">WEB APP · SECURITY FIXES</text>
+    <text class="r d1" x="24" y="46" font-size="15.5" font-weight="700" fill="#e8edf4">Course Registration System</text>
+    <text class="r d1" x="24" y="64" font-size="9.5" fill="#58a6ff" letter-spacing="1.1">WEB APP · SECURITY FIXES</text>
 
-    <text x="24" y="92" font-size="10.5" fill="#8792a2">An app that worked. Writing tests for it found five real</text>
-    <text x="24" y="109" font-size="10.5" fill="#8792a2">defects: no [Authorize] on admin, plaintext passwords, and</text>
-    <text x="24" y="126" font-size="10.5" fill="#8792a2">a capacity race that let 15 into a course with 5 places.</text>
+    <text class="r d2" x="24" y="92" font-size="10.5" fill="#8792a2">An app that worked. Writing tests for it found five real</text>
+    <text class="r d2" x="24" y="109" font-size="10.5" fill="#8792a2">defects: no [Authorize] on admin, plaintext passwords, and</text>
+    <text class="r d3" x="24" y="126" font-size="10.5" fill="#8792a2">a capacity race that let 15 into a course with 5 places.</text>
 
-    <g font-size="9" fill="#8792a2">
+    <g class="r d4" font-size="9" fill="#8792a2">
       <rect x="24"  y="142" width="98" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="73"  y="155.5" text-anchor="middle">ASP.NET Core</text>
       <rect x="128" y="142" width="62" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="159" y="155.5" text-anchor="middle">EF Core</text>
       <rect x="196" y="142" width="54" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="223" y="155.5" text-anchor="middle">SQLite</text>

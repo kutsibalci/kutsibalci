@@ -4,27 +4,41 @@
     <pattern id="p1" width="26" height="26" patternUnits="userSpaceOnUse">
       <circle cx="1" cy="1" r="1" fill="#2a323d" fill-opacity="0.4"/>
     </pattern>
+    <style>
+      @keyframes crise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes cgrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+      @keyframes cping { 0% { r: 4; opacity: .5; } 70% { r: 10; opacity: 0; } 100% { r: 10; opacity: 0; } }
+      .r  { opacity: 0; animation: crise .55s cubic-bezier(.2,.75,.3,1) forwards; }
+      .d1 { animation-delay: .08s } .d2 { animation-delay: .16s }
+      .d3 { animation-delay: .24s } .d4 { animation-delay: .34s }
+      .bar  { transform-box: view-box; transform-origin: 0 0; animation: cgrow .6s cubic-bezier(.2,.75,.3,1) forwards; }
+      .ping { animation: cping 3s ease-out infinite; }
+      @media (prefers-reduced-motion: reduce) {
+        .r, .bar { opacity: 1; transform: none; animation: none; }
+        .ping { animation: none; opacity: 0; }
+      }
+    </style>
   </defs>
   <g clip-path="url(#c1)">
     <rect width="440" height="176" fill="#0a0c10"/>
     <rect width="440" height="176" fill="url(#p1)"/>
     <circle cx="416" cy="0" r="92" fill="#58a6ff" fill-opacity="0.055"/>
-    <rect x="0" y="0" width="3" height="176" fill="#58a6ff"/>
+    <rect class="bar" x="0" y="0" width="3" height="176" fill="#58a6ff"/>
   </g>
   <rect x="0.5" y="0.5" width="439" height="175" rx="12" fill="none" stroke="#1e242c"/>
 
   <g font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace">
-    <circle cx="390" cy="26" r="3.5" fill="#3fb950"/>
+    <circle class="ping" cx="390" cy="26" r="4" fill="#3fb950"/><circle cx="390" cy="26" r="3.5" fill="#3fb950"/>
     <text x="428" y="30" font-size="9" fill="#6d7683" text-anchor="end">PUBLIC</text>
 
-    <text x="24" y="46" font-size="15.5" font-weight="700" fill="#e8edf4">Concurrent Ticketing</text>
-    <text x="24" y="64" font-size="9.5" fill="#58a6ff" letter-spacing="1.1">REST API · CONCURRENCY</text>
+    <text class="r d1" x="24" y="46" font-size="15.5" font-weight="700" fill="#e8edf4">Concurrent Ticketing</text>
+    <text class="r d1" x="24" y="64" font-size="9.5" fill="#58a6ff" letter-spacing="1.1">REST API · CONCURRENCY</text>
 
-    <text x="24" y="92" font-size="10.5" fill="#8792a2">Two buyers click one seat in the same millisecond.</text>
-    <text x="24" y="109" font-size="10.5" fill="#8792a2">Postgres xmin as an EF Core concurrency token makes</text>
-    <text x="24" y="126" font-size="10.5" fill="#8792a2">check and write one step. 20 requests → 1 sale, 19 × 409.</text>
+    <text class="r d2" x="24" y="92" font-size="10.5" fill="#8792a2">Two buyers click one seat in the same millisecond.</text>
+    <text class="r d2" x="24" y="109" font-size="10.5" fill="#8792a2">Postgres xmin as an EF Core concurrency token makes</text>
+    <text class="r d3" x="24" y="126" font-size="10.5" fill="#8792a2">check and write one step. 20 requests → 1 sale, 19 × 409.</text>
 
-    <g font-size="9" fill="#8792a2">
+    <g class="r d4" font-size="9" fill="#8792a2">
       <rect x="24"  y="142" width="56" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="52"  y="155.5" text-anchor="middle">.NET 10</text>
       <rect x="86"  y="142" width="74" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="123" y="155.5" text-anchor="middle">PostgreSQL</text>
       <rect x="166" y="142" width="66" height="20" rx="10" fill="#12151b" stroke="#232a33"/><text x="199" y="155.5" text-anchor="middle">RabbitMQ</text>
