@@ -4,18 +4,19 @@
 
 <br>
 
-**I build backend systems, and I prove they work before I say they do.**
+**I write backend systems. Every number on this page is one I measured myself.**
 
-Eight of my patches are merged into projects I had no prior connection to: CERN's **ROOT**,
-**.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** documentation. Getting a
-patch into any of them means convincing a maintainer who has never heard of you, with evidence.
+I have eight patches merged into projects I had never worked on before: CERN's **ROOT**, the
+**.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the
+bugs, wrote the fixes, and defended them to maintainers who had no idea who I was.
 
-The system I spend most time on is a pre-accounting and logistics program for a haulage business.
-People use it every day while I keep developing it — right now I am closing the gaps that only
-showed up once it met real data. I also ship mobile apps in Flutter and React Native, and I have
-taken a real-time service from one instance to two and measured exactly what that bought.
+The project I put most of my time into is a pre-accounting and logistics program. It has real users
+already and I am still building it — right now I am closing the gaps that only showed up once it
+met real data. I also write mobile apps in Flutter and React Native. And I built a watch-party
+engine where the browsers send video to each other peer to peer over a WebRTC mesh and the server
+only introduces them; when I put a second instance behind it, p95 dropped from 258 ms to 14 ms.
 
-**Looking for an internship or a junior backend role.**
+**I am looking for an internship or a junior backend position.**
 
 ### Measured, not asserted
 
