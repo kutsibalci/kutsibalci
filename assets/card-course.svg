@@ -17,7 +17,7 @@
       .bar  { transform-box: view-box; transform-origin: 0 0; animation: cgrow .6s 0.35s cubic-bezier(.2,.75,.3,1) both; }
       .ping  { animation: cping 3s ease-out infinite; }
       .shine { animation: cshine 6s 4.2s ease-in-out infinite; }
-      .tr    { animation: ctrace 9s 6.4s linear infinite; }
+      .tr    { animation: ctrace 9s 0.9s linear infinite; }
       @media (prefers-reduced-motion: reduce) {
         .r, .bar { opacity: 1; transform: none; animation: none; }
         .ping, .shine, .tr { animation: none; opacity: 0; }

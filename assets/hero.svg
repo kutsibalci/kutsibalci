@@ -10,7 +10,12 @@
     </linearGradient>
     <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%"   stop-color="#58a6ff" stop-opacity="0"/>
-      <stop offset="50%"  stop-color="#58a6ff" stop-opacity="0.55"/>
+      <stop offset="50%"  stop-color="#a8d3ff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sweepglow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#58a6ff" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#58a6ff" stop-opacity="0.32"/>
       <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
     </linearGradient>
 
@@ -19,7 +24,7 @@
       @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
       @keyframes widen { from { transform: scaleX(0); } to { transform: scaleX(1); } }
       @keyframes ping { 0% { r: 4; opacity: .55; } 70% { r: 11; opacity: 0; } 100% { r: 11; opacity: 0; } }
-      @keyframes drift { 0% { transform: translateX(-320px); } 100% { transform: translateX(900px); } }
+      @keyframes drift { 0% { transform: translateX(-440px); } 100% { transform: translateX(900px); } }
 
       .r  { opacity: 0; animation: rise .65s cubic-bezier(.2,.75,.3,1) forwards; }
       .d1 { animation-delay: .10s } .d2 { animation-delay: .20s } .d3 { animation-delay: .30s }
@@ -43,7 +48,8 @@
     <rect width="900" height="250" fill="url(#hg)"/>
     <rect width="900" height="250" fill="url(#hglow)"/>
     <rect class="bar" x="0" y="0" width="3" height="250" fill="#58a6ff"/>
-    <rect class="sweep" x="0" y="0" width="320" height="1.5" fill="url(#sweep)"/>
+    <rect class="sweep" x="0" y="0" width="440" height="8" fill="url(#sweepglow)"/>
+    <rect class="sweep" x="0" y="0" width="440" height="2.5" fill="url(#sweep)"/>
   </g>
   <rect x="0.5" y="0.5" width="899" height="249" rx="14" fill="none" stroke="#1e242c"/>
 
