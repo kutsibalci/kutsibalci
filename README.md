@@ -51,19 +51,19 @@ only introduces them; when I put a second instance behind it, p95 dropped from 2
   </tr>
 </table>
 
-<sub>Cards marked <b>PRIVATE</b> link to repositories that are not open to visitors. Happy to walk
-through any of them in an interview.</sub>
+<sub>Anything marked <b>PRIVATE</b> — a card above or a row below — links to a repository that is not
+open to visitors. Happy to walk through any of them in an interview.</sub>
 
 ### Also built
 
 | | |
 |---|---|
 | [Coffee Shop Management](https://github.com/kutsibalci/Small-coffee-Shop-Management-App) | Windows Forms till for a small café. Making the ordering logic testable is how I found that two waiters could open two tabs on one table and only one got billed. |
-| [Sefer Defteri](https://github.com/kutsibalci/sefer-defteri) | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
-| [Minik Masal](https://github.com/kutsibalci/minik-masal) | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |
-| [Business Directory API](https://github.com/kutsibalci/business-directory-api) | FastAPI service collecting business listings by province. Paginated endpoints, Alembic migrations, spreadsheet export. |
-| [Redmine Deployment](https://github.com/kutsibalci/Redmine-Upgrade) | Dockerised Redmine with PostgreSQL on AWS EC2. Built with [@hzflora](https://github.com/hzflora). |
-| [Pansuman Simulator](https://github.com/kutsibalci/PansumanSimulator) | Unity training simulator for wound dressing. In progress. |
+| [Sefer Defteri](https://github.com/kutsibalci/sefer-defteri) <sub>PRIVATE</sub> | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
+| [Minik Masal](https://github.com/kutsibalci/minik-masal) <sub>PRIVATE</sub> | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |
+| [Business Directory API](https://github.com/kutsibalci/business-directory-api) <sub>PRIVATE</sub> | FastAPI service collecting business listings by province. Paginated endpoints, Alembic migrations, spreadsheet export. |
+| [Redmine Deployment](https://github.com/kutsibalci/Redmine-Upgrade) <sub>PRIVATE</sub> | Dockerised Redmine with PostgreSQL on AWS EC2. Built with [@hzflora](https://github.com/hzflora). |
+| [Pansuman Simulator](https://github.com/kutsibalci/PansumanSimulator) <sub>PRIVATE</sub> | Unity training simulator for wound dressing. In progress. |
 
 <br>
 
