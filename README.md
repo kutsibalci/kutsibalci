@@ -6,8 +6,9 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have eight patches merged into projects I had never worked on before: CERN's **ROOT**, the
-**.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the
+I have ten patches merged into projects I had never worked on before: **NASA**'s flight-software
+ground system, CERN's **ROOT**, the **.NET runtime**, **systemd**, **Apache Airflow** and the
+**VS Code** docs. I went looking for the
 bugs, wrote the fixes, and defended them to maintainers who had no idea who I was.
 
 The project I put most of my time into is a pre-accounting and logistics program. It has real users
@@ -69,14 +70,16 @@ open to visitors. Happy to walk through any of them in an interview.</sub>
 
 ## Open source
 
-Eight patches merged into projects I had no prior connection to. The pattern is the same each time:
-I sweep for a class of defect, throw away almost everything the sweep returns, and open a pull
-request only for what I can prove.
+Ten patches merged into projects I had no prior connection to. Most began as a sweep for one class
+of defect: I throw away almost everything the sweep returns and open a pull request only for what
+I can prove. The NASA patch is the exception — it changes behaviour, not documentation.
 
 | Merged | What it was |
 |---|---|
+| [fprime-gds#333](https://github.com/nasa/fprime-gds/pull/333) | NASA's F´ ground system. A bare `except:` around opening the sequence file caught `KeyboardInterrupt` along with the file error and threw the real cause away, so a bad output path reached the user as one unhelpful line. Narrowed to `OSError`, chained the cause. It sat a week with no CI at all; I worked out that was the first-contributor approval gate, said so, and it merged the next day. |
 | [root#23002](https://github.com/root-project/root/pull/23002) | A TMVA header unreachable since 2015. I traced the commit that orphaned it and checked every symbol it declared was already covered elsewhere. |
 | [root#23004](https://github.com/root-project/root/pull/23004) | Two aggregate LinkDef headers that lost their only caller when the build went back to two dictionaries per package. |
+| [root#23019](https://github.com/root-project/root/pull/23019) | Four CMake variables in the tutorials build that nothing reads. I derived the names CMake actually looks up from the files on disk and diffed the two sets. The subtlest one I proved by rebuilding the derivation in a throwaway CMake project and reading the property back — the reasoning on its own was not proof. Merged with its CI still red, because I showed the failures came from a four-day-old build tree the runner had restored. |
 | [systemd#43300](https://github.com/systemd/systemd/pull/43300) | Seven man page cross-references pointing at the wrong section. CI went red; I pulled the 5.4 MB log, showed the failure was an unrelated ppc64le timeout, and said so. Merged with the job still red. |
 | [airflow#71179](https://github.com/apache/airflow/pull/71179) | Twenty links that 404 for every reader but open fine for every author. The directory is a git symlink blob and GitHub will not traverse one. 372 candidates went in, 20 came out. |
 | [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) | Three setting IDs whose casing does not match what VS Code registers, so they resolve to settings that do not exist. I checked all 771 IDs behind 1,760 macros. |
