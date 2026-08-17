@@ -7,9 +7,9 @@
 **I write backend systems. Every number on this page is one I measured myself.**
 
 I have ten patches merged into projects I had never worked on before: **NASA**'s flight-software
-ground system, CERN's **ROOT**, the **.NET runtime**, **systemd**, **Apache Airflow** and the
-**VS Code** docs. I went looking for the bugs, wrote the fixes, and defended them to maintainers
-who had no idea who I was.
+ground system, CERN's **ROOT**, the **Rust** compiler's GCC backend, the **.NET runtime**,
+**systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
+fixes, and defended them to maintainers who had no idea who I was.
 
 The project I put most of my time into is a pre-accounting and logistics program. It has real users
 already and I am still building it — right now I am closing the gaps that only showed up once it
