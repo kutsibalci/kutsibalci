@@ -6,7 +6,7 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have ten patches merged into projects I had never worked on before: **NASA**'s flight-software
+I have eleven patches merged into projects I had never worked on before: **NASA**'s flight-software
 ground system, CERN's **ROOT**, the **Rust** compiler's GCC backend, the **.NET runtime**,
 **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
 fixes, and defended them to maintainers who had no idea who I was.
@@ -70,7 +70,7 @@ open to visitors. Happy to walk through any of them in an interview.</sub>
 
 ## Open source
 
-Ten patches merged into projects I had no prior connection to. Most began as a sweep for one class
+Eleven patches merged into projects I had no prior connection to. Most began as a sweep for one class
 of defect: I throw away almost everything the sweep returns and open a pull request only for what
 I can prove. The NASA patch is the exception — it changes behaviour, not documentation.
 
@@ -86,6 +86,7 @@ I can prove. The NASA patch is the exception — it changes behaviour, not docum
 | [dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865) | Eight documentation links whose targets exist but whose relative paths resolve nowhere. From thirty-nine candidates. |
 | [rustc_codegen_gcc#945](https://github.com/rust-lang/rustc_codegen_gcc/pull/945) | Two broken links. The useful part was working out I was in the wrong repository: it is a subtree, so a fix landed upstream would be overwritten on the next sync. |
 | [eclipse-score/communication#853](https://github.com/eclipse-score/communication/pull/853) | Four links in the design docs of the BMW/Bosch/Mercedes automotive platform. One image URL was written `hhttp://`, so a diagram had never rendered. |
+| [eclipse-score/logging#253](https://github.com/eclipse-score/logging/pull/253) | The same automotive platform, one layer deeper. A safety-qualification record named the symbol its test verifies — except two components of that name were a directory and the test file's own basename, neither of which is a namespace anywhere in the repository. Under ISO 26262 that record is the audit trail tying a test to the requirement it discharges, so a name resolving nowhere is a broken trace, not a typo. |
 
 One more worth mentioning: [root#23036](https://github.com/root-project/root/issues/23036) was a
 report, not a patch. Three settings shipped in `system.rootrc` that nothing in ROOT reads. Whether
