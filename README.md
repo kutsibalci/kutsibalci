@@ -19,16 +19,6 @@ only introduces them; when I put a second instance behind it, p95 dropped from 2
 
 **I am looking for an internship or a junior backend position.**
 
-### Measured, not asserted
-
-| The claim | What the number says |
-|---|---|
-| A seat cannot be sold twice | 20 concurrent requests, one seat → **1 sale, 19 × 409**, one held seat in the database |
-| It scales horizontally | 2,500 connections → p95 **258 ms** on one instance, **14 ms** on two |
-| Course capacity holds under load | 15 applications, capacity 5 → old logic enrolled **15**, current logic enrolls **5** |
-| Route ordering is worth having | 10 real stops in Kadıköy → **44.3 km** as entered, **14.6 km** reordered |
-| The tests actually run | **285** passing across my repositories, on every push |
-
 <br>
 
 ## Projects
