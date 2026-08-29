@@ -6,7 +6,7 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have eleven patches merged into projects I had never worked on before: **NASA**'s flight-software
+I have twelve patches merged into projects I had never worked on before: **NASA**'s flight-software
 ground system, CERN's **ROOT**, the **Rust** compiler's GCC backend, the **.NET runtime**,
 **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
 fixes, and defended them to maintainers who had no idea who I was.
@@ -70,13 +70,15 @@ open to visitors. Happy to walk through any of them in an interview.</sub>
 
 ## Open source
 
-Eleven patches merged into projects I had no prior connection to. Most began as a sweep for one class
+Twelve patches merged into projects I had no prior connection to. Most began as a sweep for one class
 of defect: I throw away almost everything the sweep returns and open a pull request only for what
-I can prove. The NASA patch is the exception — it changes behaviour, not documentation.
+I can prove. Two are exceptions — the NASA patch and the ROOT progress-bar fix change behaviour,
+not documentation.
 
 | Merged | What it was |
 |---|---|
 | [fprime-gds#333](https://github.com/nasa/fprime-gds/pull/333) | NASA's F´ ground system. A bare `except:` around opening the sequence file caught `KeyboardInterrupt` along with the file error and threw the real cause away, so a bad output path reached the user as one unhelpful line. Narrowed to `OSError`, chained the cause. It sat a week with no CI at all; I worked out that was the first-contributor approval gate, said so, and it merged the next day. |
+| [root#23065](https://github.com/root-project/root/pull/23065) | CERN's ROOT again, and the first time there that I changed behaviour rather than removed something dead. RDataFrame's progress bar divided the event count by an elapsed time that had already been truncated to whole seconds, so any loop finishing in under a second divided by zero and printed `inf evt/s`, and longer ones over-reported. Measured on three runs: 0.447 s printed `inf` against a true 894 evt/s, 2.408 s over-reported by 20%, 5.607 s by 12%. The fix divides by a full-precision duration and keeps the truncated value for the elapsed-time text, so that line stays byte-for-byte identical. I showed the test failing on master before it passed with the patch. |
 | [root#23002](https://github.com/root-project/root/pull/23002) | A TMVA header unreachable since 2015. I traced the commit that orphaned it and checked every symbol it declared was already covered elsewhere. |
 | [root#23004](https://github.com/root-project/root/pull/23004) | Two aggregate LinkDef headers that lost their only caller when the build went back to two dictionaries per package. |
 | [root#23019](https://github.com/root-project/root/pull/23019) | Four CMake variables in the tutorials build that nothing reads. I derived the names CMake actually looks up from the files on disk and diffed the two sets. The subtlest one I proved by rebuilding the derivation in a throwaway CMake project and reading the property back — the reasoning on its own was not proof. Merged with its CI still red, because I showed the failures came from a four-day-old build tree the runner had restored. |
