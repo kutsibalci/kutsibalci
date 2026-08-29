@@ -23,24 +23,31 @@ only introduces them; when I put a second instance behind it, p95 dropped from 2
 
 ## Open source
 
-Most of the twelve began as a sweep for one class of defect: I throw away almost everything the
-sweep returns and open a pull request only for what I can prove. Two are exceptions — the NASA
-patch and the ROOT progress-bar fix change behaviour, not documentation.
+I go looking for one class of defect at a time, in code I have never worked on before. Almost
+everything a sweep returns is a false positive and gets thrown away; what survives, I prove
+before I open anything, and then defend it to maintainers who have no idea who I am.
+
+### Behaviour and design
 
 | Merged | What it was |
 |---|---|
 | [fprime-gds#333](https://github.com/nasa/fprime-gds/pull/333) | NASA's F´ ground system. A bare `except:` around opening the sequence file caught `KeyboardInterrupt` along with the file error and threw the real cause away, so a bad output path reached the user as one unhelpful line. Narrowed to `OSError`, chained the cause. It sat a week with no CI at all; I worked out that was the first-contributor approval gate, said so, and it merged the next day. |
-| [root#23065](https://github.com/root-project/root/pull/23065) | CERN's ROOT again, and the first time there that I changed behaviour rather than removed something dead. RDataFrame's progress bar divided the event count by an elapsed time that had already been truncated to whole seconds, so any loop finishing in under a second divided by zero and printed `inf evt/s`, and longer ones over-reported. Measured on three runs: 0.447 s printed `inf` against a true 894 evt/s, 2.408 s over-reported by 20%, 5.607 s by 12%. The fix divides by a full-precision duration and keeps the truncated value for the elapsed-time text, so that line stays byte-for-byte identical. I showed the test failing on master before it passed with the patch. |
-| [root#23002](https://github.com/root-project/root/pull/23002) | A TMVA header unreachable since 2015. I traced the commit that orphaned it and checked every symbol it declared was already covered elsewhere. |
-| [root#23004](https://github.com/root-project/root/pull/23004) | Two aggregate LinkDef headers that lost their only caller when the build went back to two dictionaries per package. |
+| [root#23065](https://github.com/root-project/root/pull/23065) | CERN's ROOT. RDataFrame's progress bar divided the event count by an elapsed time that had already been truncated to whole seconds, so any loop finishing in under a second divided by zero and printed `inf evt/s`, and longer ones over-reported. Measured on three runs: 0.447 s printed `inf` against a true 894 evt/s, 2.408 s over-reported by 20%, 5.607 s by 12%. The fix divides by a full-precision duration and keeps the truncated value for the elapsed-time text, so that line stays byte-for-byte identical. I showed the test failing on master before it passed with the patch. |
 | [root#23019](https://github.com/root-project/root/pull/23019) | Four CMake variables in the tutorials build that nothing reads. I derived the names CMake actually looks up from the files on disk and diffed the two sets. The subtlest one I proved by rebuilding the derivation in a throwaway CMake project and reading the property back — the reasoning on its own was not proof. Merged with its CI still red, because I showed the failures came from a four-day-old build tree the runner had restored. |
-| [systemd#43300](https://github.com/systemd/systemd/pull/43300) | Seven man page cross-references pointing at the wrong section. CI went red; I pulled the 5.4 MB log, showed the failure was an unrelated ppc64le timeout, and said so. Merged with the job still red. |
-| [airflow#71179](https://github.com/apache/airflow/pull/71179) | Twenty links that 404 for every reader but open fine for every author. The directory is a git symlink blob and GitHub will not traverse one. 372 candidates went in, 20 came out. |
-| [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) | Three setting IDs whose casing does not match what VS Code registers, so they resolve to settings that do not exist. I checked all 771 IDs behind 1,760 macros. |
-| [dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865) | Eight documentation links whose targets exist but whose relative paths resolve nowhere. From thirty-nine candidates. |
-| [rustc_codegen_gcc#945](https://github.com/rust-lang/rustc_codegen_gcc/pull/945) | Two broken links. The useful part was working out I was in the wrong repository: it is a subtree, so a fix landed upstream would be overwritten on the next sync. |
-| [eclipse-score/communication#853](https://github.com/eclipse-score/communication/pull/853) | Four links in the design docs of the BMW/Bosch/Mercedes automotive platform. One image URL was written `hhttp://`, so a diagram had never rendered. |
-| [eclipse-score/logging#253](https://github.com/eclipse-score/logging/pull/253) | The same automotive platform, one layer deeper. A safety-qualification record named the symbol its test verifies — except two components of that name were a directory and the test file's own basename, neither of which is a namespace anywhere in the repository. Under ISO 26262 that record is the audit trail tying a test to the requirement it discharges, so a name resolving nowhere is a broken trace, not a typo. |
+| [eclipse-score/logging#253](https://github.com/eclipse-score/logging/pull/253) | Eclipse S-CORE, the BMW/Bosch/Mercedes automotive platform. A safety-qualification record named the symbol its test verifies — except two components of that name were a directory and the test file's own basename, neither of which is a namespace anywhere in the repository. Under ISO 26262 that record is the audit trail tying a test to the requirement it discharges, so a name resolving nowhere is a broken trace, not a typo. |
+
+### Defect sweeps
+
+One class of defect, hunted across a whole corpus. The second number is the one that matters.
+
+| Merged | What it was |
+|---|---|
+| [airflow#71179](https://github.com/apache/airflow/pull/71179) | **20 of 372 candidates.** Links that 404 for every reader but open fine for every author: the directory is a git symlink blob, and GitHub will not traverse one. |
+| [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) | **3 of 771 setting IDs**, behind 1,760 macros. The casing does not match what VS Code registers, so they resolve to settings that do not exist. |
+| [dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865) | **8 of 39 candidates.** Documentation links whose targets exist but whose relative paths resolve nowhere. |
+| [systemd#43300](https://github.com/systemd/systemd/pull/43300) | **7 man page cross-references** pointing at the wrong section. CI went red; I pulled the 5.4 MB log, showed the failure was an unrelated ppc64le timeout, and it merged with the job still red. |
+| [root#23002](https://github.com/root-project/root/pull/23002) · [root#23004](https://github.com/root-project/root/pull/23004) | A TMVA header unreachable since 2015, and two aggregate LinkDef headers that lost their only caller when the build went back to two dictionaries per package. Each traced to the commit that orphaned it. |
+| [rustc_codegen_gcc#945](https://github.com/rust-lang/rustc_codegen_gcc/pull/945) · [communication#853](https://github.com/eclipse-score/communication/pull/853) | Two links in the Rust compiler's GCC backend — the useful part was working out that it is a subtree, so a fix landed upstream would be overwritten on the next sync. Four more in the BMW/Bosch/Mercedes design docs, one of them written `hhttp://`, so a diagram had never rendered. |
 
 One more worth mentioning: [root#23036](https://github.com/root-project/root/issues/23036) was a
 report, not a patch. Three settings shipped in `system.rootrc` that nothing in ROOT reads. Whether
