@@ -6,9 +6,9 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have twelve patches merged into projects I had never worked on before: **NASA**'s flight-software
-ground system, CERN's **ROOT**, the **Rust** compiler's GCC backend, the **.NET runtime**,
-**systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
+I have fifteen patches merged into projects I had never worked on before: **NASA**'s flight-software
+ground system, CERN's **ROOT**, **Apache Kafka**, **NVIDIA**'s CUTLASS, the **Rust** compiler's GCC
+backend, the **.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
 fixes, and defended them to maintainers who had no idea who I was.
 
 The project I put most of my time into is a pre-accounting and logistics program. It has real users
@@ -35,6 +35,8 @@ before I open anything, and then defend it to maintainers who have no idea who I
 | [root#23065](https://github.com/root-project/root/pull/23065) | CERN's ROOT. RDataFrame's progress bar divided the event count by an elapsed time that had already been truncated to whole seconds, so any loop finishing in under a second divided by zero and printed `inf evt/s`, and longer ones over-reported. Measured on three runs: 0.447 s printed `inf` against a true 894 evt/s, 2.408 s over-reported by 20%, 5.607 s by 12%. The fix divides by a full-precision duration and keeps the truncated value for the elapsed-time text, so that line stays byte-for-byte identical. I showed the test failing on master before it passed with the patch. |
 | [root#23019](https://github.com/root-project/root/pull/23019) | Four CMake variables in the tutorials build that nothing reads. I derived the names CMake actually looks up from the files on disk and diffed the two sets. The subtlest one I proved by rebuilding the derivation in a throwaway CMake project and reading the property back — the reasoning on its own was not proof. Merged with its CI still red, because I showed the failures came from a four-day-old build tree the runner had restored. |
 | [eclipse-score/logging#253](https://github.com/eclipse-score/logging/pull/253) | Eclipse S-CORE, the BMW/Bosch/Mercedes automotive platform. A safety-qualification record named the symbol its test verifies — except two components of that name were a directory and the test file's own basename, neither of which is a namespace anywhere in the repository. Under ISO 26262 that record is the audit trail tying a test to the requirement it discharges, so a name resolving nowhere is a broken trace, not a typo. |
+| [kafka#23098](https://github.com/apache/kafka/pull/23098) | Apache Kafka. `TokenInformation.equals` compares six fields; `hashCode` hashed those six **plus** `expiryTimestamp`. Two tokens that compare equal therefore hashed differently, which breaks the `Object.hashCode` contract and silently corrupts any `HashMap` keyed on them — and `expiryTimestamp` is the one field with a setter, so it is precisely the field a hash key must not contain. Removing it from `hashCode` preserves what `equals` already means; adding it to `equals` would have changed behaviour for existing callers. Merged with 89 lines of new tests. |
+| [baselibs#517](https://github.com/eclipse-score/baselibs/pull/517) | The BMW/Bosch/Mercedes automotive platform. A maintainer proposed replacing a placement-new with `value_.emplace(...)`; by compiling each case I showed that this would silently narrow the API, because `score::Result<T>::emplace()` is constrained on `std::is_nothrow_constructible` while constructing the `Result` places no such requirement on `T`. 292 lines of characterization tests now pin both edges of the accepted set. They pass on unmodified `main` — I ran them against the baseline as well, so they describe existing behaviour rather than my own patch — and I mutated the guard to confirm every assertion actually discriminates. |
 
 ### Defect sweeps
 
@@ -45,6 +47,7 @@ those out is the work — the patch is what is left when it is done.
 
 | Merged | What it was |
 |---|---|
+| [cutlass#3436](https://github.com/NVIDIA/cutlass/pull/3436) | **16 links across 6 files.** NVIDIA's CUTLASS moved its documentation into `media/docs/cpp/` and renamed three example directories; every link still pointing at the old paths was left behind. |
 | [airflow#71179](https://github.com/apache/airflow/pull/71179) | **372 candidates in, 20 real.** Links that 404 for every reader but open fine for every author: the directory is a git symlink blob, and GitHub will not traverse one. |
 | [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) | **771 setting IDs behind 1,760 macros, 3 wrong.** The casing does not match what VS Code registers, so they resolve to settings that do not exist. |
 | [dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865) | **39 candidates in, 8 real.** Documentation links whose targets exist but whose relative paths resolve nowhere. |
