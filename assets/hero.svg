@@ -20,27 +20,25 @@
     </linearGradient>
 
     <style>
-      @keyframes rise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
       @keyframes widen { from { transform: scaleX(0); } to { transform: scaleX(1); } }
       @keyframes ping { 0% { r: 4; opacity: .55; } 70% { r: 11; opacity: 0; } 100% { r: 11; opacity: 0; } }
       @keyframes drift { 0% { transform: translateX(-440px); } 100% { transform: translateX(900px); } }
 
-      /* No base opacity: 0 here. GitHub does not run CSS animations in a README SVG, so anything
-         that relies on an animation to become visible never appears. `both` supplies the from-state
-         during the delay where animations do run, and the natural (visible) state where they do not. */
-      .r  { animation: rise .65s cubic-bezier(.2,.75,.3,1) both; }
-      .d1 { animation-delay: .10s } .d2 { animation-delay: .20s } .d3 { animation-delay: .30s }
-      .d4 { animation-delay: .42s } .d5 { animation-delay: .60s } .d6 { animation-delay: .70s }
-      .d7 { animation-delay: .80s } .d8 { animation-delay: .90s }
-
+      /* Nothing here may depend on an animation in order to be visible. GitHub renders a README
+         SVG without ever starting the animation clock, so a group that begins fully transparent
+         and is revealed only by an entrance animation stays invisible for good. That is what hid
+         this banner: the name, the merge count and every stat sit in groups that were faded in
+         that way, so all that ever drew was the frame and the grid, which were not. Those groups
+         now carry no rule at all and simply render. Everything still animated below begins at its
+         finished state and only moves from there, and none of it carries text. */
       .bar   { transform-box: view-box; transform-origin: 0 0; animation: grow .7s cubic-bezier(.2,.75,.3,1) forwards; }
-      .rule  { transform-box: view-box; transform-origin: 44px 190px; animation: widen .9s .45s cubic-bezier(.2,.75,.3,1) both; }
+      .rule  { transform-box: view-box; transform-origin: 44px 190px; animation: widen .9s .45s cubic-bezier(.2,.75,.3,1) forwards; }
       .ping  { animation: ping 2.6s ease-out infinite; }
       .sweep { animation: drift 7s 1s linear infinite; }
 
       @media (prefers-reduced-motion: reduce) {
-        .r, .bar, .rule { opacity: 1; transform: none; animation: none; }
+        .bar, .rule { transform: none; animation: none; }
         .ping, .sweep { animation: none; opacity: 0; }
       }
     </style>
