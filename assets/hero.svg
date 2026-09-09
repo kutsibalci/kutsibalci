@@ -26,7 +26,10 @@
       @keyframes ping { 0% { r: 4; opacity: .55; } 70% { r: 11; opacity: 0; } 100% { r: 11; opacity: 0; } }
       @keyframes drift { 0% { transform: translateX(-440px); } 100% { transform: translateX(900px); } }
 
-      .r  { opacity: 0; animation: rise .65s cubic-bezier(.2,.75,.3,1) forwards; }
+      /* No base opacity: 0 here. GitHub does not run CSS animations in a README SVG, so anything
+         that relies on an animation to become visible never appears. `both` supplies the from-state
+         during the delay where animations do run, and the natural (visible) state where they do not. */
+      .r  { animation: rise .65s cubic-bezier(.2,.75,.3,1) both; }
       .d1 { animation-delay: .10s } .d2 { animation-delay: .20s } .d3 { animation-delay: .30s }
       .d4 { animation-delay: .42s } .d5 { animation-delay: .60s } .d6 { animation-delay: .70s }
       .d7 { animation-delay: .80s } .d8 { animation-delay: .90s }
