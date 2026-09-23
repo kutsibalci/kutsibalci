@@ -6,9 +6,10 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have fifteen patches merged into projects I had never worked on before: **NASA**'s flight-software
-ground system, CERN's **ROOT**, **Apache Kafka**, **NVIDIA**'s CUTLASS, the **Rust** compiler's GCC
-backend, the **.NET runtime**, **systemd**, **Apache Airflow** and the **VS Code** docs. I went looking for the bugs, wrote the
+I have seventeen patches merged into projects I had never worked on before: **NASA**'s
+flight-software ground system, CERN's **ROOT**, **LLVM**, **Apache Kafka**, **NVIDIA**'s CUTLASS,
+the **Rust** compiler's GCC backend, the **.NET runtime**, **systemd**, **Apache Airflow** and the
+**VS Code** docs. I went looking for the bugs, wrote the
 fixes, and defended them to maintainers who had no idea who I was.
 
 The project I put most of my time into is a pre-accounting and logistics program. It has real users
@@ -48,8 +49,9 @@ those out is the work — the patch is what is left when it is done.
 | Merged | What it was |
 |---|---|
 | [cutlass#3436](https://github.com/NVIDIA/cutlass/pull/3436) | **16 links across 6 files.** NVIDIA's CUTLASS moved its documentation into `media/docs/cpp/` and renamed three example directories; every link still pointing at the old paths was left behind. |
+| [llvm#213994](https://github.com/llvm/llvm-project/pull/213994) | **Two stale paths in the LLVM documentation.** `creduce-clang-crash.py` was renamed in 59cee030f, and the CVDebugRecord header moved to `llvm/include/llvm/Object/` in 211c67cdb; both documents still pointed at the old locations. Git records each of those commits as a rename of exactly that file, so neither replacement path was a guess. The branch also had to be rebuilt mid-review when `llvm/docs/PDB/` was converted from reStructuredText to Markdown underneath it. |
 | [airflow#71179](https://github.com/apache/airflow/pull/71179) | **372 candidates in, 20 real.** Links that 404 for every reader but open fine for every author: the directory is a git symlink blob, and GitHub will not traverse one. |
-| [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) | **771 setting IDs behind 1,760 macros, 3 wrong.** The casing does not match what VS Code registers, so they resolve to settings that do not exist. |
+| [vscode-docs#10119](https://github.com/microsoft/vscode-docs/pull/10119) · [#10120](https://github.com/microsoft/vscode-docs/pull/10120) | **771 setting IDs behind 1,760 macros, 3 wrong** — the casing does not match what VS Code registers, so they resolve to settings that do not exist. Then two links that 404 on code.visualstudio.com: an absolute path that only resolves on learn.microsoft.com, and one written `debugging.md/#launch-configurations`, carrying both a stray slash and the wrong filename. |
 | [dotnet/runtime#131865](https://github.com/dotnet/runtime/pull/131865) | **39 candidates in, 8 real.** Documentation links whose targets exist but whose relative paths resolve nowhere. |
 | [systemd#43300](https://github.com/systemd/systemd/pull/43300) | **7 man page cross-references** pointing at the wrong section. CI went red; I pulled the 5.4 MB log, showed the failure was an unrelated ppc64le timeout, and it merged with the job still red. |
 | [root#23002](https://github.com/root-project/root/pull/23002) · [root#23004](https://github.com/root-project/root/pull/23004) | A TMVA header unreachable since 2015, and two aggregate LinkDef headers that lost their only caller when the build went back to two dictionaries per package. Each traced to the commit that orphaned it. |
