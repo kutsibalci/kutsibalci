@@ -12,6 +12,16 @@ the **Rust** compiler's GCC backend, the **.NET runtime**, **systemd**, **Apache
 **VS Code** docs. I went looking for the bugs, wrote the
 fixes, and defended them to maintainers who had no idea who I was.
 
+In September I built **[HeatShield](https://github.com/kutsibalci/heatshield)** on my own for the GSMA
+MENA Ignite Hackathon, and it finished in the **top 10 of 1,348 teams** from 23 countries. It tracks
+which outdoor workers are still exposed once Gulf heat passes the legal limit, using the mobile
+network itself as the sensor through six Nokia Network as Code APIs. I presented it live to the jury on
+21 September. [Live demo](https://heatshield-demo.onrender.com/demo) · [3-minute video](https://youtu.be/z1N6U4yv6xA)
+
+This summer I did my internship at Anadolu University’s Computer Research and Application Center
+(BAUM). I wrote seven Redmine 7 plugins there that turn it into a Jira-style tracker, and the bundle
+now has thirteen.
+
 The project I put most of my time into is a pre-accounting and logistics program. It has real users
 already and I am still building it — right now I am closing the gaps that only showed up once it
 met real data. I also write mobile apps in Flutter and React Native. And I built a watch-party
@@ -70,6 +80,10 @@ outcome.
 
 <table>
   <tr>
+    <td width="50%"><a href="https://github.com/kutsibalci/heatshield"><img src="./assets/card-heatshield.svg" alt="HeatShield" width="100%" /></a></td>
+    <td width="50%"><a href="https://github.com/kutsibalci/Redmine-Upgrade"><img src="./assets/card-redmine.svg" alt="Redmine 7 Plugins" width="100%" /></a></td>
+  </tr>
+  <tr>
     <td width="50%"><a href="https://github.com/kutsibalci/concurrent-ticketing"><img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing" width="100%" /></a></td>
     <td width="50%"><a href="https://github.com/kutsibalci/watch-party-sync-engine"><img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine" width="100%" /></a></td>
   </tr>
@@ -98,7 +112,6 @@ open to visitors. Happy to walk through any of them in an interview.</sub>
 | [Sefer Defteri](https://github.com/kutsibalci/sefer-defteri) <sub>PRIVATE</sub> | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
 | [Minik Masal](https://github.com/kutsibalci/minik-masal) <sub>PRIVATE</sub> | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |
 | [Business Directory API](https://github.com/kutsibalci/business-directory-api) <sub>PRIVATE</sub> | FastAPI service collecting business listings by province. Paginated endpoints, Alembic migrations, spreadsheet export. |
-| [Redmine Deployment](https://github.com/kutsibalci/Redmine-Upgrade) <sub>PRIVATE</sub> | Dockerised Redmine with PostgreSQL on AWS EC2. Built with [@hzflora](https://github.com/hzflora). |
 | [Pansuman Simulator](https://github.com/kutsibalci/PansumanSimulator) <sub>PRIVATE</sub> | Unity training simulator for wound dressing. In progress. |
 
 <br>
