@@ -6,29 +6,21 @@
 
 **I write backend systems. Every number on this page is one I measured myself.**
 
-I have seventeen patches merged into projects I had never worked on before: **NASA**'s
-flight-software ground system, CERN's **ROOT**, **LLVM**, **Apache Kafka**, **NVIDIA**'s CUTLASS,
-the **Rust** compiler's GCC backend, the **.NET runtime**, **systemd**, **Apache Airflow** and the
-**VS Code** docs. I went looking for the bugs, wrote the
-fixes, and defended them to maintainers who had no idea who I was.
+- **Top 10 of 1,348 teams** at the GSMA MENA Ignite Hackathon 2026 with
+  [HeatShield](https://github.com/kutsibalci/heatshield), which I built on my own on six Nokia Network as Code
+  APIs and presented live to the jury. [Live demo](https://heatshield-demo.onrender.com/demo) ·
+  [3-minute video](https://youtu.be/z1N6U4yv6xA)
+- **17 patches merged upstream** into **NASA** F´, CERN **ROOT**, **LLVM**, **Apache Kafka**, **NVIDIA**
+  CUTLASS, the **.NET runtime**, **systemd**, **Apache Airflow**, the **Rust** compiler's GCC backend and the
+  **VS Code** docs, in code I had never worked on before. [Details below](#open-source).
+- **Internship at Anadolu University's computer center (BAUM), summer 2026.** I wrote seven Redmine 7
+  plugins that turn it into a Jira-style tracker, and the bundle now has thirteen.
+- **A pre-accounting and logistics system with real users**, which I am still building, plus mobile
+  apps in Flutter and React Native.
+- **Measured, not claimed.** Twenty simultaneous requests for one seat sell it exactly once. A second
+  instance cut the watch-party engine's p95 from 258 ms to 14 ms.
 
-In September I built **[HeatShield](https://github.com/kutsibalci/heatshield)** on my own for the GSMA
-MENA Ignite Hackathon, and it finished in the **top 10 of 1,348 teams** from 23 countries. It tracks
-which outdoor workers are still exposed once Gulf heat passes the legal limit, using the mobile
-network itself as the sensor through six Nokia Network as Code APIs. I presented it live to the jury on
-21 September. [Live demo](https://heatshield-demo.onrender.com/demo) · [3-minute video](https://youtu.be/z1N6U4yv6xA)
-
-This summer I did my internship at Anadolu University’s Computer Research and Application Center
-(BAUM). I wrote seven Redmine 7 plugins there that turn it into a Jira-style tracker, and the bundle
-now has thirteen.
-
-The project I put most of my time into is a pre-accounting and logistics program. It has real users
-already and I am still building it — right now I am closing the gaps that only showed up once it
-met real data. I also write mobile apps in Flutter and React Native. And I built a watch-party
-engine where the browsers send video to each other peer to peer over a WebRTC mesh and the server
-only introduces them; when I put a second instance behind it, p95 dropped from 258 ms to 14 ms.
-
-**I am looking for an internship or a junior backend position.**
+**I am looking for an internship or a junior backend position.** Based in İzmir, open to remote and hybrid.
 
 <br>
 
@@ -49,7 +41,9 @@ before I open anything, and then defend it to maintainers who have no idea who I
 | [kafka#23098](https://github.com/apache/kafka/pull/23098) | Apache Kafka. `TokenInformation.equals` compares six fields; `hashCode` hashed those six **plus** `expiryTimestamp`. Two tokens that compare equal therefore hashed differently, which breaks the `Object.hashCode` contract and silently corrupts any `HashMap` keyed on them — and `expiryTimestamp` is the one field with a setter, so it is precisely the field a hash key must not contain. Removing it from `hashCode` preserves what `equals` already means; adding it to `equals` would have changed behaviour for existing callers. Merged with 89 lines of new tests. |
 | [baselibs#517](https://github.com/eclipse-score/baselibs/pull/517) | The BMW/Bosch/Mercedes automotive platform. A maintainer proposed replacing a placement-new with `value_.emplace(...)`; by compiling each case I showed that this would silently narrow the API, because `score::Result<T>::emplace()` is constrained on `std::is_nothrow_constructible` while constructing the `Result` places no such requirement on `T`. 292 lines of characterization tests now pin both edges of the accepted set. They pass on unmodified `main` — I ran them against the baseline as well, so they describe existing behaviour rather than my own patch — and I mutated the guard to confirm every assertion actually discriminates. |
 
-### Defect sweeps
+<details>
+<summary><b>Defect sweeps</b>: ten more merges from scanning whole repositories for one class of bug</summary>
+<br>
 
 Each of these started as a scanner run over a whole repository, and the number that matters is how
 much came back wrong. A link that looks broken usually is not: a redirect, a case-insensitive
@@ -74,6 +68,8 @@ wrote that subsystem replied *"Yes, some parameters were not cleaned up"*, opene
 hour later, and it merged. No commit under my name, which for that kind of finding is the honest
 outcome.
 
+</details>
+
 <br>
 
 ## Projects
@@ -81,38 +77,37 @@ outcome.
 <table>
   <tr>
     <td width="50%"><a href="https://github.com/kutsibalci/heatshield"><img src="./assets/card-heatshield.svg" alt="HeatShield" width="100%" /></a></td>
-    <td width="50%"><a href="https://github.com/kutsibalci/Redmine-Upgrade"><img src="./assets/card-redmine.svg" alt="Redmine 7 Plugins" width="100%" /></a></td>
+    <td width="50%"><img src="./assets/card-redmine.svg" alt="Redmine 7 Plugins" width="100%" /></td>
   </tr>
   <tr>
     <td width="50%"><a href="https://github.com/kutsibalci/concurrent-ticketing"><img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing" width="100%" /></a></td>
     <td width="50%"><a href="https://github.com/kutsibalci/watch-party-sync-engine"><img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine" width="100%" /></a></td>
   </tr>
   <tr>
-    <td width="50%"><a href="https://github.com/kutsibalci/on-muhasebe-lojistik-takip"><img src="./assets/card-onyuz.svg" alt="Ön Muhasebe ve Lojistik Takibi" width="100%" /></a></td>
-    <td width="50%"><a href="https://github.com/kutsibalci/sinav-motoru"><img src="./assets/card-sinav.svg" alt="Sınav Motoru" width="100%" /></a></td>
+    <td width="50%"><img src="./assets/card-onyuz.svg" alt="Ön Muhasebe ve Lojistik Takibi" width="100%" /></td>
+    <td width="50%"><img src="./assets/card-sinav.svg" alt="Sınav Motoru" width="100%" /></td>
   </tr>
   <tr>
-    <td width="50%"><a href="https://github.com/kutsibalci/kurye-rota"><img src="./assets/card-kurye.svg" alt="Kurye Rota" width="100%" /></a></td>
+    <td width="50%"><img src="./assets/card-kurye.svg" alt="Kurye Rota" width="100%" /></td>
     <td width="50%"><a href="https://github.com/kutsibalci/Course-Registration-System"><img src="./assets/card-course.svg" alt="Course Registration System" width="100%" /></a></td>
   </tr>
   <tr>
-    <td width="50%"><a href="https://github.com/kutsibalci/File-Analysis"><img src="./assets/card-analysis.svg" alt="File Analysis Service" width="100%" /></a></td>
-    <td width="50%"><a href="https://github.com/kutsibalci/life-gate"><img src="./assets/card-lifegate.svg" alt="Life Gate" width="100%" /></a></td>
+    <td width="50%"><img src="./assets/card-analysis.svg" alt="File Analysis Service" width="100%" /></td>
+    <td width="50%"><img src="./assets/card-lifegate.svg" alt="Life Gate" width="100%" /></td>
   </tr>
 </table>
 
-<sub>Anything marked <b>PRIVATE</b> — a card above or a row below — links to a repository that is not
-open to visitors. Happy to walk through any of them in an interview.</sub>
+<sub>Cards marked <b>PRIVATE</b> are closed-source work. Happy to walk through any of them in an interview.</sub>
 
 ### Also built
 
 | | |
 |---|---|
 | [Coffee Shop Management](https://github.com/kutsibalci/Small-coffee-Shop-Management-App) | Windows Forms till for a small café. Making the ordering logic testable is how I found that two waiters could open two tabs on one table and only one got billed. |
-| [Sefer Defteri](https://github.com/kutsibalci/sefer-defteri) <sub>PRIVATE</sub> | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
-| [Minik Masal](https://github.com/kutsibalci/minik-masal) <sub>PRIVATE</sub> | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |
-| [Business Directory API](https://github.com/kutsibalci/business-directory-api) <sub>PRIVATE</sub> | FastAPI service collecting business listings by province. Paginated endpoints, Alembic migrations, spreadsheet export. |
-| [Pansuman Simulator](https://github.com/kutsibalci/PansumanSimulator) <sub>PRIVATE</sub> | Unity training simulator for wound dressing. In progress. |
+| Sefer Defteri <sub>PRIVATE</sub> | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
+| Minik Masal <sub>PRIVATE</sub> | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |
+| Business Directory API <sub>PRIVATE</sub> | FastAPI service collecting business listings by province. Paginated endpoints, Alembic migrations, spreadsheet export. |
+| Pansuman Simulator <sub>PRIVATE</sub> | Unity training simulator for wound dressing. In progress. |
 
 <br>
 
