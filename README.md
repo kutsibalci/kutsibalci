@@ -80,20 +80,20 @@ outcome.
     <td width="50%"><img src="./assets/card-redmine.svg" alt="Redmine 7 Plugins" width="100%" /></td>
   </tr>
   <tr>
+    <td width="50%"><img src="./assets/card-sinav.svg" alt="Sınav Motoru" width="100%" /></td>
+    <td width="50%"><img src="./assets/card-onyuz.svg" alt="Ön Muhasebe ve Lojistik Takibi" width="100%" /></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./assets/card-lifegate.svg" alt="Life Gate" width="100%" /></td>
+    <td width="50%"><img src="./assets/card-analysis.svg" alt="File Analysis Service" width="100%" /></td>
+  </tr>
+  <tr>
     <td width="50%"><a href="https://github.com/kutsibalci/concurrent-ticketing"><img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing" width="100%" /></a></td>
     <td width="50%"><a href="https://github.com/kutsibalci/watch-party-sync-engine"><img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine" width="100%" /></a></td>
   </tr>
   <tr>
-    <td width="50%"><img src="./assets/card-onyuz.svg" alt="Ön Muhasebe ve Lojistik Takibi" width="100%" /></td>
-    <td width="50%"><img src="./assets/card-sinav.svg" alt="Sınav Motoru" width="100%" /></td>
-  </tr>
-  <tr>
     <td width="50%"><img src="./assets/card-kurye.svg" alt="Kurye Rota" width="100%" /></td>
     <td width="50%"><a href="https://github.com/kutsibalci/Course-Registration-System"><img src="./assets/card-course.svg" alt="Course Registration System" width="100%" /></a></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="./assets/card-analysis.svg" alt="File Analysis Service" width="100%" /></td>
-    <td width="50%"><img src="./assets/card-lifegate.svg" alt="Life Gate" width="100%" /></td>
   </tr>
 </table>
 
