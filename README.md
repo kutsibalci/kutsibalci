@@ -88,12 +88,12 @@ outcome.
     <td width="50%"><img src="./assets/card-analysis.svg" alt="File Analysis Service" width="100%" /></td>
   </tr>
   <tr>
+    <td width="50%"><a href="https://github.com/kutsibalci/arrivalguard"><img src="./assets/card-arrivalguard.svg" alt="ArrivalGuard" width="100%" /></a></td>
     <td width="50%"><a href="https://github.com/kutsibalci/concurrent-ticketing"><img src="./assets/card-ticketing.svg" alt="Concurrent Ticketing" width="100%" /></a></td>
-    <td width="50%"><a href="https://github.com/kutsibalci/watch-party-sync-engine"><img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine" width="100%" /></a></td>
   </tr>
   <tr>
+    <td width="50%"><a href="https://github.com/kutsibalci/watch-party-sync-engine"><img src="./assets/card-watchparty.svg" alt="Watch Party Sync Engine" width="100%" /></a></td>
     <td width="50%"><img src="./assets/card-kurye.svg" alt="Kurye Rota" width="100%" /></td>
-    <td width="50%"><a href="https://github.com/kutsibalci/Course-Registration-System"><img src="./assets/card-course.svg" alt="Course Registration System" width="100%" /></a></td>
   </tr>
 </table>
 
@@ -103,6 +103,7 @@ outcome.
 
 | | |
 |---|---|
+| [Course Registration System](https://github.com/kutsibalci/Course-Registration-System) | ASP.NET Core MVC app for course applications. Writing tests for it found five real defects, among them an admin area with no `[Authorize]` and plaintext passwords. |
 | [Coffee Shop Management](https://github.com/kutsibalci/Small-coffee-Shop-Management-App) | Windows Forms till for a small café. Making the ordering logic testable is how I found that two waiters could open two tabs on one table and only one got billed. |
 | Sefer Defteri <sub>PRIVATE</sub> | The driver's side of the accounting system. Expo, on-device SQLite, document expiry reminders. Works with no signal in a truck cab. |
 | Minik Masal <sub>PRIVATE</sub> | Audio story player for small children, with a parent gate. Written twice: Flutter and Expo. |

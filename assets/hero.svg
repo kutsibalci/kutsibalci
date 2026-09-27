@@ -74,7 +74,7 @@
         <text x="145" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">UPSTREAM MERGES</text>
       </g>
       <g class="r d6">
-        <text x="348" y="220" font-size="21" font-weight="700" fill="#e8edf4">285</text>
+        <text x="348" y="220" font-size="21" font-weight="700" fill="#e8edf4">466</text>
         <text x="348" y="236" font-size="9.5" fill="#7a8595" letter-spacing="1.1">TESTS PASSING</text>
       </g>
       <g class="r d7">
