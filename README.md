@@ -10,7 +10,7 @@
   [HeatShield](https://github.com/kutsibalci/heatshield), which I built on my own on six Nokia Network as Code
   APIs and presented live to the jury. [Live demo](https://heatshield-demo.onrender.com/demo) ·
   [3-minute video](https://youtu.be/z1N6U4yv6xA)
-- **17 patches merged upstream** into **NASA** F´, CERN **ROOT**, **LLVM**, **Apache Kafka**, **NVIDIA**
+- **18 patches merged upstream** into **NASA** F´, CERN **ROOT**, **LLVM**, **Apache Kafka**, **NVIDIA**
   CUTLASS, the **.NET runtime**, **systemd**, **Apache Airflow**, the **Rust** compiler's GCC backend and the
   **VS Code** docs, in code I had never worked on before. [Details below](#open-source).
 - **Internship at Anadolu University's computer center (BAUM), summer 2026.** I wrote seven Redmine 7
@@ -40,9 +40,10 @@ before I open anything, and then defend it to maintainers who have no idea who I
 | [eclipse-score/logging#253](https://github.com/eclipse-score/logging/pull/253) | Eclipse S-CORE, the BMW/Bosch/Mercedes automotive platform. A safety-qualification record named the symbol its test verifies — except two components of that name were a directory and the test file's own basename, neither of which is a namespace anywhere in the repository. Under ISO 26262 that record is the audit trail tying a test to the requirement it discharges, so a name resolving nowhere is a broken trace, not a typo. |
 | [kafka#23098](https://github.com/apache/kafka/pull/23098) | Apache Kafka. `TokenInformation.equals` compares six fields; `hashCode` hashed those six **plus** `expiryTimestamp`. Two tokens that compare equal therefore hashed differently, which breaks the `Object.hashCode` contract and silently corrupts any `HashMap` keyed on them — and `expiryTimestamp` is the one field with a setter, so it is precisely the field a hash key must not contain. Removing it from `hashCode` preserves what `equals` already means; adding it to `equals` would have changed behaviour for existing callers. Merged with 89 lines of new tests. |
 | [baselibs#517](https://github.com/eclipse-score/baselibs/pull/517) | The BMW/Bosch/Mercedes automotive platform. A maintainer proposed replacing a placement-new with `value_.emplace(...)`; by compiling each case I showed that this would silently narrow the API, because `score::Result<T>::emplace()` is constrained on `std::is_nothrow_constructible` while constructing the `Result` places no such requirement on `T`. 292 lines of characterization tests now pin both edges of the accepted set. They pass on unmodified `main` — I ran them against the baseline as well, so they describe existing behaviour rather than my own patch — and I mutated the guard to confirm every assertion actually discriminates. |
+| [baselibs#444](https://github.com/eclipse-score/baselibs/pull/444) | The same platform, the change those tests were written to guard. Six places overwrote a live `score::Result` with placement `new`, which ends the old object's lifetime without ever running its destructor. Having the tests, I then measured whether anything actually leaks — and **reported on the PR that it does not**: the object each placement-new overwrites always holds the error alternative, and `score::result::Error` is trivially destructible. So this is lifetime correctness, not a bug fix. I said so, offered to close it, and the maintainer accepted it on those terms. |
 
 <details>
-<summary><b>Defect sweeps</b>: ten more merges from scanning whole repositories for one class of bug</summary>
+<summary><b>Defect sweeps</b>: eleven more merges from scanning whole repositories for one class of bug</summary>
 <br>
 
 Each of these started as a scanner run over a whole repository, and the number that matters is how
